@@ -1,7 +1,7 @@
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
 header {
   background-color: #1a1a5e;
   padding: 10px 30px;
-  display: flex;
+  display: flex;  
   justify-content: space-between;
   align-items: center;
   height: 70px;
@@ -39,17 +39,21 @@ header nav a:hover {
 
 .profile-container {
   display: flex;
+  flex-direction: column;
   min-height: calc(100vh - 70px);
+  padding: 20px;
 }
 
 .sidebar {
-  width: 250px;
+  width: 100%;
   background-color: white;
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
 
 .avatar {
@@ -78,6 +82,7 @@ header nav a:hover {
 .sidebar-menu {
   list-style: none;
   width: 100%;
+  max-width: 400px;
   margin-top: 20px;
 }
 
@@ -92,6 +97,7 @@ header nav a:hover {
   text-decoration: none;
   border-radius: 4px;
   font-size: 14px;
+  text-align: center;
 }
 
 .sidebar-menu a:hover {
@@ -104,8 +110,10 @@ header nav a:hover {
 }
 
 .content {
-  flex: 1;
+  width: 100%;
+  background-color: white;
   padding: 30px;
+  border-radius: 8px;
 }
 
 .content h2 {
@@ -121,7 +129,7 @@ header nav a:hover {
 }
 
 .ticket-card {
-  background-color: white;
+  background-color: #f0f2f5;
   border-radius: 8px;
   width: 200px;
   height: 120px;
@@ -131,24 +139,16 @@ footer {
   text-align: center;
   padding: 16px;
   font-size: 12px;
-  color: #aaa;
-  background-color: white;
+  color: #ffffff;
+  background-color: #1a1a5e;
   margin-top: auto;
-}
-
-@media screen and (max-width: 768px) {
-  .profile-container {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-  }
 }
 
 @media screen and (max-width: 480px) {
   .tickets-grid {
     flex-direction: column;
   }
+
   .ticket-card {
     width: 100%;
   }

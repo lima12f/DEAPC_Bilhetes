@@ -1,18 +1,23 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #e0e0e0;
+    background-color: #f0f2f5;
     margin: 0;
     padding: 0;
 }
 
 /* NAVBAR */
 nav {
-    background-color: #0f1f4b;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    height: 60px;
+  background-color: #1a1a5e;
+  padding: 0px 30px;
+  display: flex;  
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  overflow: hidden;
+}
+
+h2 {
+    text-align: center;
 }
 
 .logo-nav {
@@ -25,8 +30,9 @@ nav {
 }
 
 .logo-nav img {
-    height: 300px;
-    margin-left: -40px;
+  height: 300px;
+  margin-left: -80px;
+  display: block;
 }
 
 .botoes-nav {
@@ -96,10 +102,11 @@ th {
 
 /* FOOTER */
 footer {
-    background-color: #0f1f4b;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-    padding: 16px;
-    font-size: 13px;
-    margin-top: 500px;
+  text-align: center;
+  padding: 8px;
+  font-size: 12px;
+  color: #f0f2f5;
+  background-color: #1a1a5e;
+  margin-top: 550px;
+  border-top: 1px solid #eee;
 }
