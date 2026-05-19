@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TicketZone - Administrador</title>
+    <link rel="stylesheet" href="styles/admin.css" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo-nav">
+            <img src="images/logo.png" alt="Logo TicketZone" />
+        </div>
+        <div class="botoes-nav">
+            <button class="botao botao-criar">Criar evento</button>
+            <button class="botao botao-perfil">Perfil</button>
+        </div>
+    </nav>
+
+    <!-- Principal -->
+    <main>
+
+        <p>Administrador</p>
+
+        <!-- Tabela de resumo -->
+        <div class="resumo">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Total de Bilhetes Vendidos</th>
+                        <th>Ganhos (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2.573</td>
+                        <td>27.564,35€</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabela de eventos -->
+        <table class="eventos">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Vendas</th>
+                    <th>Ganhos (€)</th>
+                    <th>Editar / Cancelar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Queima das Fitas do Porto 2026</td>
+                    <td>2.573</td>
+                    <td>27.564,35€</td>
+                    <td>
+                        <button class="botao-editar">-</button>
+                        <button class="botao-cancelar">x</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p> 2026 TicketZone. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
