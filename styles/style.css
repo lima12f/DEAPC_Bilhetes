@@ -212,59 +212,106 @@ header nav a:hover {
   background-color: #11113f;
 }
 
-.container-bilhetes {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 700px;
+/* ── Página de compra – layout duas colunas ── */
+
+.pagina-evento {
+  display: flex;
+  gap: 30px;
+  max-width: 1100px;
   margin: 30px auto;
+  padding: 0 20px;
+  align-items: flex-start;
 }
 
+.coluna-esquerda {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.coluna-direita {
+  width: 340px;
+  flex-shrink: 0;
+}
+
+/* Banner */
 .banner-evento img {
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 10px;
   display: block;
   margin-bottom: 20px;
 }
 
+/* Título do evento */
 .detalhes-evento h2 {
   color: #1a1a5e;
-  font-size: 22px;
-  margin-bottom: 6px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 14px;
 }
 
-.detalhes-evento .info-sub {
+/* Badges de data e local */
+.info-badges {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.badge-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dde0ec;
+  border-radius: 8px;
+  padding: 10px 16px;
   font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
+  color: #333;
+  background-color: white;
+  flex: 1;
 }
 
+.badge-icone {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Descrição */
 .detalhes-evento h3 {
-  font-size: 16px;
-  color: #1a1a5e;
+  font-size: 15px;
+  font-weight: bold;
+  color: #222;
   margin-bottom: 8px;
 }
 
 .detalhes-evento p {
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #555;
-  margin-bottom: 25px;
 }
 
-.seccao-compra {
-  border-top: 1px solid #eee;
-  padding-top: 20px;
+/* Cartão de compra */
+.cartao-compra {
+  background-color: white;
+  border: 1px solid #dde0ec;
+  border-radius: 12px;
+  padding: 24px;
 }
 
-.seccao-compra h3 {
-  color: #1a1a5e;
-  font-size: 16px;
-  margin-bottom: 15px;
+.cartao-compra h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 14px;
 }
 
+.divisor {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin-bottom: 20px;
+}
+
+/* Linha de seleção de bilhete */
 .linha-selecao {
   display: flex;
   justify-content: space-between;
@@ -275,45 +322,51 @@ header nav a:hover {
 .info-preco .nome-bilhete {
   font-weight: bold;
   font-size: 15px;
+  color: #111;
 }
 
 .info-preco .valor-bilhete {
   color: #666;
-  font-size: 14px;
-  margin-top: 2px;
+  font-size: 13px;
+  margin-top: 3px;
 }
 
+/* Seletor de quantidade */
 .seletor-quantidade {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f8f9fa;
+  gap: 4px;
 }
 
 .seletor-quantidade button {
-  background: none;
+  background-color: white;
   color: #333;
-  border: none;
-  border-radius: 10px;
-  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
   font-size: 16px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 0;
 }
 
 .seletor-quantidade button:hover {
-  background-color: #e9ecef;
+  background-color: #f0f2f5;
 }
 
 .seletor-quantidade span {
-  padding: 0 10px;
+  width: 30px;
+  text-align: center;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 
+/* Resumo de preços */
 .caixa-resumo {
-  background-color: #f0f2f5;
+  background-color: #f8f9fb;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
@@ -323,26 +376,31 @@ header nav a:hover {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  color: #555;
+  color: #666;
   margin-bottom: 8px;
 }
 
-.linha-resumo.total-final {
-  border-top: 1px dashed #ccc;
-  padding-top: 8px;
+.linha-resumo:last-child {
   margin-bottom: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
 }
 
+.linha-resumo.total-final {
+  border-top: 1px solid #dde0ec;
+  padding-top: 12px;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #111;
+}
+
+/* Botão de pagamento */
 .btn-pagamento {
   width: 100%;
   padding: 14px;
   background-color: #1a1a5e;
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
@@ -350,6 +408,28 @@ header nav a:hover {
 
 .btn-pagamento:hover {
   background-color: #11113f;
+}
+
+/* Botão Perfil no header */
+.btn-perfil {
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 6px 14px !important;
+}
+
+/* Responsivo */
+@media screen and (max-width: 768px) {
+  .pagina-evento {
+    flex-direction: column;
+  }
+
+  .coluna-direita {
+    width: 100%;
+  }
+
+  .info-badges {
+    flex-direction: column;
+  }
 }
  
 footer {
