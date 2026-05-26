@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <?php include 'include/header.php'; ?>
+    <?php include 'scripts/header.php'; ?>
 
     <div id="zona-pesquisa">
         <h1>Encontra o teu próximo evento</h1>
@@ -96,8 +96,8 @@
         <p> 2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
 
-    <?php include 'include/carrinho_modal.php'; ?>
-    <script src="scripts/carrinho.js"></script>
+    <?php include 'scripts/carrinho_modal.php'; ?>
+    <script src="js/carrinho.js"></script>
 
 </body>
 </html>
