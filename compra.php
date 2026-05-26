@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <?php include 'scripts/header.php'; ?>
+    <?php include 'include/header.php'; ?>
 
     <main class="pagina-evento">
 
@@ -69,12 +69,8 @@
                 </div>
 
                 <?php if (isset($_SESSION['id_utilizador'])): ?>
-                    <form method="POST" action="scripts/carrinho_adicionar.php">
-                        <input type="hidden" name="id_tipo_bilhete" value="1"> 
-                        
-                        <input type="hidden" name="quantidade" id="input-quantidade-escondido" value="1">
-                        
-                        <button type="submit" class="btn-pagamento">Adicionar ao Carrinho</button>
+                    <form method="POST" action="include/carrinho_adicionar.php">
+                        <button type="submit" class="btn-pagamento">Avançar para Pagamento</button>
                     </form>
                 <?php else: ?>
                     <a href="login.php" class="btn-pagamento" style="display:block; text-align:center; text-decoration:none; box-sizing: border-box;">Fazer Login para Comprar</a>
@@ -88,8 +84,8 @@
         <p>2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
 
-    <?php include 'scripts/carrinho_modal.php'; ?>
-    <script src="js/carrinho.js"></script>
+    <?php include 'include/carrinho_modal.php'; ?>
+    <script src="scripts/carrinho.js"></script>
 
 </body>
 </html>
