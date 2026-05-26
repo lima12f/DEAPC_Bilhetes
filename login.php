@@ -15,20 +15,39 @@
     <main>
       <h1>Bem-vindo de volta!</h1>
 
+      <?php if (isset($_GET['erro'])): ?>
+        <p class="erro">
+          <?php
+            $erros = [
+              'campos_vazios'    => 'Preencha todos os campos.',
+              'credenciais'      => 'Email ou palavra-passe incorretos.',
+              'erro_bd'          => 'Erro ao aceder à base de dados. Tente novamente.'
+            ];
+            echo $erros[$_GET['erro']] ?? 'Erro desconhecido.';
+          ?>
+        </p>
+      <?php endif; ?>
+
+      <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] === 'registo'): ?>
+        <p class="sucesso">Conta criada com sucesso! Faça login.</p>
+      <?php endif; ?>
+
       <div class="caixa">
+        <form method="POST" action="scripts/login.php">
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="O teu email" />
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="O teu email" required />
 
-        <label for="password">Palavra-passe</label>
-        <input type="password" id="password" name="password" placeholder="A tua palavra-passe" />
+          <label for="password">Palavra-passe</label>
+          <input type="password" id="password" name="password" placeholder="A tua palavra-passe" required />
 
-        <button type="button" onclick="window.location.href='index.html'">Entrar</button>
+          <button type="submit">Entrar</button>
 
-        <p>Ainda não tem conta? <a href="registo.html">Registe-se!</a></p>
+        </form>
 
+        <p>Ainda não tem conta? <a href="registo.php">Registe-se!</a></p>
       </div>
     </main>
 
-  <body class="pagina">
+  </body>
 </html>
