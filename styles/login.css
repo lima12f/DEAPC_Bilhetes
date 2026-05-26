@@ -37,12 +37,6 @@ main h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.caixa form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 label {
   font-size: 13px;
   color: #555;
@@ -126,5 +120,5 @@ button:hover {
 }
 
 .logo-topo img {
-  height: 220px;
+  height: 300px;
 }
