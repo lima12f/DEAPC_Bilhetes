@@ -1,3 +1,19 @@
+<?php
+// Inicia a sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Proteção da página: se o utilizador não estiver logado, redireciona para o login
+if (!isset($_SESSION['id_utilizador'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Futuramente podes ir buscar o nome e email do utilizador à base de dados
+// $nome = $_SESSION['username'];
+// $iniciais = ... 
+?>
 <!DOCTYPE html>
 <html lang="pt">
   <head>
@@ -8,26 +24,18 @@
   </head>
   <body>
 
-    <header>
-      <a href="index.html">
-        <img src="images/logo.png" alt="TicketZone" />
-      </a>
-      <a href="admin.html">Admin</a>
-
-    </header>
+    <?php include 'header.php'; // Ajusta o caminho se o header estiver dentro de 'scripts/' ou 'include/' ?>
 
     <main class="profile-container">
 
       <aside class="sidebar">
 
-        <div class="avatar">JS</div>
-
-        <h2>Joao Silva</h2>
+        <div class="avatar">JS</div> <h2>Joao Silva</h2>
         <p>joaosilva@example.com</p>
 
         <ul class="sidebar-menu">
           <li><a href="#">Os Meus Bilhetes</a></li>
-          <li><a href="login.html">Terminar Sessao</a></li>
+          <li><a href="include/logout.php">Terminar Sessão</a></li>
         </ul>
 
       </aside>
@@ -46,8 +54,12 @@
     </main>
 
     <footer>
-        <p> 2026 TicketZone. Todos os direitos reservados.</p>
+        <p>&copy; 2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
+
+    <?php 
+    include 'scripts/carrinho_modal.php'; 
+    ?>
 
   </body>
 </html>
