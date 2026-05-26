@@ -1,62 +1,72 @@
-<div id="overlay-carrinho" class="overlay-escondido"></div>
-<div id="modal-carrinho" class="modal-escondido">
+<?php
+// include/carrinho_modal.php
+
+// 1. Inclui o script que acabámos de criar para ir buscar os dados à BD
+include_once 'carrinho_ver.php';
+
+// 2. Verifica se o parâmetro de URL indica que o carrinho deve iniciar aberto
+$classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'aberto') ? 'ativo' : '';
+?>
+
+<div id="overlay-carrinho" class="<?php echo $classe_visibilidade; ?>"></div>
+
+<div id="modal-carrinho" class="<?php echo $classe_visibilidade; ?>">
     <div class="cabecalho-carrinho">
         <h2>O teu Carrinho</h2>
         <button id="fechar-carrinho">&times;</button>
     </div>
     
     <div class="conteudo-carrinho">
-        <div class="item-carrinho">
-            <img src="images/Nos.jpg" alt="NOS Alive" class="img-item-carrinho">
-            <div class="detalhes-item-carrinho">
-                <h4>NOS Alive 2026</h4>
-                <p>Passe Geral (3 Dias)</p>
-                <div class="rodape-item-carrinho">
-                    <span class="qtd-item">Qtd: 2</span>
-                    <span class="preco-item">90.00€</span>
+        <?php if (empty($itens_carrinho)): ?>
+            <p class="carrinho-vazio">O teu carrinho está vazio.</p>
+        <?php else: ?>
+            
+            <?php foreach ($itens_carrinho as $item): ?>
+                <div class="item-carrinho">
+                    <img src="<?php echo htmlspecialchars($item['evento_imagem']); ?>" 
+                         alt="<?php echo htmlspecialchars($item['evento_nome']); ?>" 
+                         class="img-item-carrinho">
+                    
+                    <div class="detalhes-item-carrinho">
+                        <h4><?php echo htmlspecialchars($item['evento_nome']); ?></h4>
+                        <p><?php echo htmlspecialchars($item['tipo_bilhete']); ?></p>
+                        
+                        <div class="rodape-item-carrinho">
+                            <span class="qtd-item">Qtd: <?php echo $item['quantidade']; ?></span>
+                            <span class="preco-item"><?php echo number_format($item['preco'] * $item['quantidade'], 2, ',', ' '); ?>€</span>
+                        </div>
+                    </div>
+                    
+                    <form method="POST" action="include/carrinho_remover.php" class="form-remover">
+                        <input type="hidden" name="id_item_carrinho" value="<?php echo $item['id_carrinho']; ?>">
+                        <button type="submit" class="btn-remover-item" title="Remover do carrinho">&times;</button>
+                    </form>
                 </div>
-            </div>
-            <form method="POST" action="include/carrinho_remover.php" class="form-remover">
-                <input type="hidden" name="id_item_carrinho" value="1">
-                <button type="submit" class="btn-remover-item" title="Remover do carrinho">&times;</button>
-            </form>
-        </div>
+            <?php endforeach; ?>
 
-        <div class="item-carrinho">
-            <img src="images/queima.jpg" alt="Queima das Fitas" class="img-item-carrinho">
-            <div class="detalhes-item-carrinho">
-                <h4>Queima das Fitas</h4>
-                <p>Bilhete Diário (Sábado)</p>
-                <div class="rodape-item-carrinho">
-                    <span class="qtd-item">Qtd: 1</span>
-                    <span class="preco-item">15.00€</span>
-                </div>
-            </div>
-            <form method="POST" action="include/carrinho_remover.php" class="form-remover">
-                <input type="hidden" name="id_item_carrinho" value="2">
-                <button type="submit" class="btn-remover-item" title="Remover do carrinho">&times;</button>
-            </form>
-        </div>
-
-        </div>
-
-    <div class="rodape-carrinho">
-        <div class="resumo-carrinho">
-            <div class="linha-resumo">
-                <span>Subtotal</span>
-                <span>105.00€</span>
-            </div>
-            <div class="linha-resumo">
-                <span>Taxas (10%)</span>
-                <span>10.50€</span>
-            </div>
-            <div class="linha-resumo total-final">
-                <span>Total</span>
-                <span>115.50€</span>
-            </div>
-        </div>
-        <form method="POST" action="include/confirmar_compra.php">
-            <button type="submit" class="btn-pagamento">Finalizar Compra</button>
-        </form>
+        <?php endif; ?>
     </div>
+
+    <?php if (!empty($itens_carrinho)): ?>
+        <div class="rodape-carrinho">
+            <div class="resumo-carrinho">
+                <div class="linha-resumo">
+                    <span>Subtotal</span>
+                    <span><?php echo number_format($subtotal, 2, ',', ' '); ?>€</span>
+                </div>
+                <div class="linha-resumo">
+                    <span>Taxas (10%)</span>
+                    <span><?php echo number_format($taxas, 2, ',', ' '); ?>€</span>
+                </div>
+                <div class="linha-resumo total-final">
+                    <span>Total</span>
+                    <span><?php echo number_format($total, 2, ',', ' '); ?>€</span>
+                </div>
+            </div>
+            
+            <form method="POST" action="include/confirmar_compra.php">
+                <button type="submit" class="btn-pagamento">Finalizar Compra</button>
+            </form>
+        </div>
+    <?php endif; ?>
 </div>

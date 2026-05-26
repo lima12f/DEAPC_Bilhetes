@@ -5,7 +5,7 @@
 | `novoregisto.php (david)` | Recebe os dados do formulário de registo, verifica se o username/email já existe e, caso não exista, cria o novo utilizador na base de dados | CLI01, CLI02 |
 | `login.php (david)` | Valida as credenciais (username + password) via POST, inicia sessão e redireciona o utilizador para a página adequada conforme o seu perfil (cliente ou admin) | CLI01, CLI02, CLI03, ADM01, ADM02 |
 | `logout.php (david)` | Termina a sessão do utilizador autenticado e redireciona para a homepage | Todos |
-| `pesquisa_eventos.php` | Recebe os parâmetros de pesquisa (texto, categoria, localização, data) e devolve os eventos correspondentes da base de dados | CLI02 |
+| `carregar_eventos_homepage.php(diogo)` | Recebe os parâmetros de pesquisa (texto, categoria, localização, data) e devolve os eventos correspondentes da base de dados | CLI02 |
 | `detalhes_evento.php` | Recebe o ID do evento e devolve a informação detalhada do mesmo, incluindo os tipos de bilhete disponíveis e as respetivas quantidades e preços | CLI01 |
 | `carrinho_adicionar.php` | Recebe o ID do tipo de bilhete e a quantidade e adiciona o item ao carrinho do utilizador autenticado, verificando disponibilidade | CLI01 |
 | `carrinho_ver.php (David)` | Devolve os itens presentes no carrinho do utilizador autenticado, com subtotais e total | CLI01 |
