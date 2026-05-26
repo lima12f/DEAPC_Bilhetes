@@ -10,8 +10,13 @@ if (!isset($_SESSION['id_utilizador'])) {
     exit;
 }
 
-?>
+// Ir buscar os dados guardados na sessão após o login correto
+$nome_utilizador = $_SESSION['username'];
+$email_utilizador = $_SESSION['email'];
 
+// Gerar as iniciais para o Avatar (ex: apanha as primeiras 2 letras do username em Maiúsculas)
+$iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
+?>
 <!DOCTYPE html>
 <html lang="pt">
   <head>
@@ -22,14 +27,16 @@ if (!isset($_SESSION['id_utilizador'])) {
   </head>
   <body>
 
-    <?php include 'header.php'; // Ajusta o caminho se o header estiver dentro de 'scripts/' ou 'include/' ?>
+    <?php include 'scripts/header.php'; ?>
 
     <main class="profile-container">
 
       <aside class="sidebar">
 
-        <div class="avatar">JS</div> <h2>Joao Silva</h2>
-        <p>joaosilva@example.com</p>
+        <div class="avatar"><?php echo htmlspecialchars($iniciais_avatar); ?></div>
+
+        <h2><?php echo htmlspecialchars($nome_utilizador); ?></h2>
+        <p><?php echo htmlspecialchars($email_utilizador); ?></p>
 
         <ul class="sidebar-menu">
           <li><a href="#">Os Meus Bilhetes</a></li>
@@ -42,9 +49,9 @@ if (!isset($_SESSION['id_utilizador'])) {
         <h2>Os Meus Bilhetes</h2>
 
         <div class="tickets-grid">
-          <div class="ticket-card"></div>
-          <div class="ticket-card"></div>
-          <div class="ticket-card"></div>
+          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
+          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
+          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
         </div>
 
       </section>
@@ -55,9 +62,8 @@ if (!isset($_SESSION['id_utilizador'])) {
         <p>&copy; 2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
 
-    <?php 
-    include 'scripts/carrinho_modal.php'; 
-    ?>
+    <?php include 'scripts/carrinho_modal.php'; ?>
+    <script src="js/carrinho.js"></script>
 
   </body>
 </html>

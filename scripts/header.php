@@ -1,6 +1,5 @@
 <?php
 // este ficheiro será incluído em todas as páginas para mostrar o header e verificar se o utilizador está logado ou não
-// inicia a sessão apenas se ainda não tiver sido iniciada
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,7 +10,7 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
 <header>
     <a href="index.php" class="logo-link">
         <img src="images/logo.png" alt="TicketZone">
-    </a>
+    </a>    
     <nav style="display: flex; align-items: center; gap: 15px;">
         <?php if (isset($_SESSION['id_utilizador'])): ?>
             

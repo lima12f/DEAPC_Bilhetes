@@ -45,10 +45,10 @@ $stmt->execute();
 $db->close();
 
 // Guardar sessao
-$_SESSION['id']       = $utilizador['id'];
-$_SESSION['username'] = $utilizador['username'];
-$_SESSION['email']    = $utilizador['email'];
-$_SESSION['tipo']     = $utilizador['tipo'];
+$_SESSION['id_utilizador'] = $utilizador['id'];
+$_SESSION['username']      = $utilizador['username'];
+$_SESSION['email']         = $utilizador['email'];
+$_SESSION['tipo']          = $utilizador['tipo'];
 
 header("Location: ../index.php");
 exit;

@@ -1,1 +1,7 @@
 *.DS_Store
+ticketzone.db
+*.identifier
+*.sql
+*.db
+*.sqlite
+*.sqlite3
