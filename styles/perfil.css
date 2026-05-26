@@ -10,6 +10,7 @@ body {
   color: #333;
 }
 
+/* ── Header ── */
 header {
   background-color: #1a1a5e;
   padding: 10px 30px;
@@ -37,6 +38,14 @@ header nav a:hover {
   text-decoration: underline;
 }
 
+/* Botão Perfil no header (caso venha a aparecer ou seja reutilizado) */
+.btn-perfil {
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 6px 14px !important;
+}
+
+/* ── Layout Perfil ── */
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -152,4 +161,159 @@ footer {
   .ticket-card {
     width: 100%;
   }
+}
+
+/* ── Modal do Carrinho (Sidebar Direita) ── */
+#overlay-carrinho {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#overlay-carrinho.ativo {
+  display: block;
+  opacity: 1;
+}
+
+#modal-carrinho {
+  position: fixed;
+  top: 0; right: -400px;
+  width: 400px; height: 100%;
+  background: white;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+  z-index: 999;
+  transition: right 0.3s ease;
+  display: flex; flex-direction: column;
+}
+
+#modal-carrinho.ativo {
+  right: 0;
+}
+
+.cabecalho-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #1a1a5e;
+  color: white;
+}
+
+.cabecalho-carrinho h2 {
+  font-size: 20px;
+}
+
+#fechar-carrinho {
+  background: none; border: none;
+  color: white; font-size: 28px;
+  cursor: pointer;
+}
+
+.conteudo-carrinho {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.rodape-carrinho {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fb;
+}
+
+@media screen and (max-width: 480px) {
+  #modal-carrinho { width: 100%; right: -100%; }
+}
+
+/* ── Interior dos Itens do Carrinho ── */
+.item-carrinho {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.img-item-carrinho {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #d0d4e8;
+}
+
+.detalhes-item-carrinho {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detalhes-item-carrinho h4 {
+  font-size: 15px;
+  color: #1a1a5e;
+  margin-bottom: 4px;
+}
+
+.detalhes-item-carrinho p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.rodape-item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 25px; 
+}
+
+.qtd-item {
+  font-size: 12px;
+  background-color: #f0f2f5;
+  color: #555;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.preco-item {
+  font-size: 14px;
+  font-weight: bold;
+  color: #111;
+}
+
+.form-remover {
+  position: absolute;
+  top: 12px;
+  right: 0;
+}
+
+.btn-remover-item {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.btn-remover-item:hover {
+  color: #d9534f;
+}
+
+.resumo-carrinho {
+  margin-bottom: 16px;
+}
+
+.carrinho-vazio {
+  text-align: center;
+  color: #666;
+  margin-top: 30px;
+  font-size: 15px;
 }
