@@ -1,3 +1,11 @@
+<?php
+// Inicia a sessão se for necessário para o header e carrinho
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Inclui a lógica que carrega os eventos da Base de Dados
+include 'scripts/carregar_eventos_homepage.php';
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -13,84 +21,72 @@
     <div id="zona-pesquisa">
         <h1>Encontra o teu próximo evento</h1>
         <p>Milhares de eventos à tua espera. Garante o teu lugar hoje!</p>
+        
         <div id="barra-procura">
-            <input type="text" placeholder="Pesquisar">
-            <button>Pesquisar</button>
+            <form method="GET" action="index.php" style="display: flex; width: 100%;">
+                <input type="text" name="q" placeholder="Pesquisar por evento..." value="<?php echo htmlspecialchars($termo_pesquisa); ?>" style="flex: 1; border-radius: 8px 0 0 8px;">
+                <button type="submit" style="border-radius: 0 8px 8px 0;">Pesquisar</button>
+            </form>
         </div>
     </div>
 
     <div id="conteudo-eventos">
-        <h1>Eventos em Destaque</h1>
+        <h1>
+            <?php 
+            // Muda o título se houver uma pesquisa
+            if ($termo_pesquisa !== '') {
+                echo 'Resultados da pesquisa para: "' . htmlspecialchars($termo_pesquisa) . '"';
+            } else {
+                echo 'Eventos em Destaque';
+            }
+            ?>
+        </h1>
+        
         <div id="bloco-cards">
-
-            <a href="compra.php" class="card">
-                <div class="card-imagem">
-                    <img src="images/Nos.jpg" alt="Nos Alive 2026">
-                    <span class="card-badge">Música</span>
-                </div>
-                <div class="card-info">
-                    <h3 class="card-titulo">NOS Alive 2026</h3>
-                    <div class="card-detalhe">
-                        <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
-                        <span>10 - 12 Jul 2026</span>
-                    </div>
-                    <div class="card-detalhe">
-                        <img src="assets/mapa.svg" alt="local" class="icone-detalhe">
-                        <span>Passeio Marítimo de Algés, Lisboa</span>
-                    </div>
-                    <div class="card-footer">
-                        <span class="card-preco">A partir de <strong>45€</strong></span>
-                        <span class="card-btn">Comprar</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="compra.php" class="card">
-                <div class="card-imagem">
-                    <img src="images/porto.jpg" alt="FC Porto vs Benfica">
-                    <span class="card-badge">Desporto</span>
-                </div>
-                <div class="card-info">
-                    <h3 class="card-titulo">FC Porto vs Benfica</h3>
-                    <div class="card-detalhe">
-                        <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
-                        <span>5 Jun 2026</span>
-                    </div>
-                    <div class="card-detalhe">
-                        <img src="assets/mapa.svg" alt="local" class="icone-detalhe">
-                        <span>Estádio do Dragão, Porto</span>
-                    </div>
-                    <div class="card-footer">
-                        <span class="card-preco">A partir de <strong>30€</strong></span>
-                        <span class="card-btn">Comprar</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="compra.php" class="card">
-                <div class="card-imagem">
-                    <img src="images/fantasma.jpg" alt="O Fantasma da Ópera">
-                    <span class="card-badge">Teatro</span>
-                </div>
-                <div class="card-info">
-                    <h3 class="card-titulo">O Fantasma da Ópera</h3>
-                    <div class="card-detalhe">
-                        <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
-                        <span>20 - 30 Jun 2026</span>
-                    </div>
-                    <div class="card-detalhe">
-                        <img src="assets/mapa.svg" alt="local" class="icone-detalhe">
-                        <span>Teatro Nacional D. Maria II, Lisboa</span>
-                    </div>
-                    <div class="card-footer">
-                        <span class="card-preco">A partir de <strong>25€</strong></span>
-                        <span class="card-btn">Comprar</span>
-                    </div>
-                </div>
-            </a>
-
+    
+            <?php if (empty($lista_eventos)): ?>
+                
+                <p style="text-align: center; width: 100%; color: #666; font-size: 18px; padding: 40px 0;">
+                    Não encontrámos nenhum evento com esse nome. Tenta outra pesquisa!
+                </p>
+                
+            <?php else: ?>
+                
+                <?php foreach ($lista_eventos as $evento): ?>
+                    <a href="compra.php?id=<?php echo $evento['id']; ?>" class="card">
+                        <div class="card-imagem">
+                            <img src="<?php echo htmlspecialchars($evento['imagem']); ?>" alt="<?php echo htmlspecialchars($evento['nome']); ?>">
+                            <span class="card-badge"><?php echo htmlspecialchars($evento['categoria_nome']); ?></span>
+                        </div>
+                        <div class="card-info">
+                            <h3 class="card-titulo"><?php echo htmlspecialchars($evento['nome']); ?></h3>
+                            <div class="card-detalhe">
+                                <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
+                                <span>
+                                    <?php 
+                                    if (!empty($evento['data_fim']) && $evento['data_fim'] !== $evento['data_inicio']) {
+                                        echo htmlspecialchars($evento['data_inicio'] . ' a ' . $evento['data_fim']);
+                                    } else {
+                                        echo htmlspecialchars($evento['data_inicio']);
+                                    }
+                                    ?>
+                                </span>
+                            </div>
+                            <div class="card-detalhe">
+                                <img src="assets/mapa.svg" alt="local" class="icone-detalhe">
+                                <span><?php echo htmlspecialchars($evento['local']); ?></span>
+                            </div>
+                            
+                            <div class="card-footer">
+                                <span class="card-preco">A partir de <strong><?php echo (int)$evento['preco_minimo']; ?>€</strong></span>
+                                <span class="card-btn">Comprar</span>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
 
     <footer>
         <p> 2026 TicketZone. Todos os direitos reservados.</p>
