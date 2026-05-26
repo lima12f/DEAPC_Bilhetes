@@ -10,10 +10,8 @@ if (!isset($_SESSION['id_utilizador'])) {
     exit;
 }
 
-// Futuramente podes ir buscar o nome e email do utilizador à base de dados
-// $nome = $_SESSION['username'];
-// $iniciais = ... 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt">
   <head>
