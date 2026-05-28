@@ -10,8 +10,9 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
 <header>
     <a href="index.php" class="logo-link">
         <img src="images/logo.png" alt="TicketZone">
-    </a>    
-    <nav style="display: flex; align-items: center; gap: 15px;">
+    </a>
+    
+    <nav style="display: flex; align-items: center; gap: 20px;">
         <?php if (isset($_SESSION['id_utilizador'])): ?>
             
             <a href="index.php">Início</a>
@@ -20,16 +21,15 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
                 <a href="admin.php">Admin</a>
             <?php endif; ?>
             
-            
             <?php if ($pagina_atual !== 'perfil.php'): ?>
                 <a href="perfil.php" class="btn-perfil">Perfil</a>
             <?php endif; ?>
             
-            <a href="include/logout.php">Sair</a>
-            
-            <button id="btn-abrir-carrinho" class="btn-carrinho-nav" title="Ver Carrinho" style="background:none; border:none; cursor:pointer; margin-left: 10px;">
+            <button id="btn-abrir-carrinho" class="btn-carrinho-nav" title="Ver Carrinho" style="background:none; border:none; cursor:pointer; display: flex; align-items: center;">
                 <img src="assets/carrinho.svg" alt="Carrinho" style="height: 24px; width: 24px; filter: invert(1);">
             </button>
+
+            <a href="include/logout.php" class="btn-sair">Sair</a>
 
         <?php else: ?>
             <a href="login.php">Login</a>

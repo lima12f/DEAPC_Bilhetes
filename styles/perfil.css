@@ -21,7 +21,7 @@ header {
   overflow: hidden;
 }
 
-header img {
+header .logo-link img {
   height: 300px;
   margin-left: -80px;
   display: block;
@@ -42,7 +42,22 @@ header nav a:hover {
 .btn-perfil {
   border: 1px solid white;
   border-radius: 20px;
-  padding: 6px 14px !important;
+  padding: 6px 14px;
+}
+
+/* ── Estilos do Botão Sair no Header ── */
+header nav a.btn-sair {
+    color: #ff6b6b; /* Vermelho claro que contrasta bem no fundo azul escuro */
+    font-weight: bold;
+    margin-left: 10px; /* Garante separação extra do carrinho */
+    border-left: 1px solid rgba(255, 255, 255, 0.2); /* Cria uma linha vertical de separação */
+    padding-left: 20px; /* Espaço entre a linha e o texto */
+    transition: color 0.2s ease;
+}
+
+header nav a.btn-sair:hover {
+    color: #ff3333;
+    text-decoration: none;
 }
 
 /* ── Layout Perfil ── */

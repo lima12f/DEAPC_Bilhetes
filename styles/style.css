@@ -20,7 +20,8 @@ header {
   overflow: hidden;
 }
 
-header img {
+/* Alterado para afetar apenas a imagem do logo e não o ícone do carrinho */
+header .logo-link img {
   height: 300px;
   margin-left: -80px;
   display: block;
@@ -35,6 +36,20 @@ header nav a {
  
 header nav a:hover {
   text-decoration: underline;
+}
+/* ── Estilos do Botão Sair no Header ── */
+header nav a.btn-sair {
+  color: #ff6b6b; /* Vermelho claro que contrasta bem no fundo azul escuro */
+  font-weight: bold;
+  margin-left: 10px; /* Garante separação extra do carrinho */
+  border-left: 1px solid rgba(255, 255, 255, 0.2); /* Cria uma linha vertical de separação */
+  padding-left: 20px; /* Espaço entre a linha e o texto */
+  transition: color 0.2s ease;
+}
+
+header nav a.btn-sair:hover {
+    color: #ff3333;
+    text-decoration: none;
 }
 
 #zona-pesquisa {
