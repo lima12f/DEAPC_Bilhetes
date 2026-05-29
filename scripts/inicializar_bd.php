@@ -49,12 +49,14 @@ try {
     // 5. Criar Tabela de Tipos de Bilhete
     $db->exec("CREATE TABLE IF NOT EXISTS tipos_bilhete (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_evento INTEGER,
+        id_evento INTEGER NOT NULL,
         nome TEXT NOT NULL,
         preco REAL NOT NULL,
         qtd_total INTEGER NOT NULL,
         qtd_disponivel INTEGER NOT NULL,
-        FOREIGN KEY (id_evento) REFERENCES eventos(id) ON DELETE CASCADE
+        data_valido_inicio DATE NOT NULL,
+        data_valido_fim DATE NOT NULL,
+        FOREIGN KEY (id_evento) REFERENCES eventos(id)
     );");
 
     // 6. Criar Tabela do Carrinho

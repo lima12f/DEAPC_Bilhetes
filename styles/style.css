@@ -638,3 +638,71 @@ footer {
   margin-top: 30px;
   font-size: 15px;
 }
+
+.seletor-bilhete-dropdown {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #111;
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+}
+
+.seletor-bilhete-dropdown:focus {
+    border-color: #1a1a5e;
+}
+
+#display-preco-unitario {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Ajustes na div info-preco para acomodar o dropdown */
+.info-preco {
+    flex: 1;
+    margin-right: 15px;
+}
+
+/* ── Filtros de Categoria (Homepage) ── */
+.filtros-categoria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badge-filtro {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.badge-filtro:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+}
+
+/* Estado Ativo do Filtro */
+.badge-filtro.ativo {
+  background-color: #fff;
+  color: #1a1a5e; /* Mesma cor do fundo do header para contraste */
+  font-weight: bold;
+  border-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}

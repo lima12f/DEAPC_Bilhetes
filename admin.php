@@ -3,7 +3,7 @@
 session_start();
 
 // Se não é admin, retorna para o login
-if (!isset($_SESSION['utilizador_id']) || $_SESSION['utilizador_tipo'] !== 'admin') {
+if (!isset($_SESSION['id_utilizador']) || $_SESSION['tipo'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
@@ -38,7 +38,8 @@ foreach ($eventos as $evento) {
         </div>
         <div class="botoes-nav">
             <button class="botao botao-criar">Criar evento</button>
-            <button class="botao botao-perfil">Perfil</button>
+            <button class="botao botao-perfil" onclick="location.href='perfil.php'">Perfil</button>
+            <button class="botao botao-sair" onclick="location.href='scripts/logout.php'">Sair</button>
         </div>
     </nav>
 
