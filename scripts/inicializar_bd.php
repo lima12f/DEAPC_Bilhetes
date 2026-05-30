@@ -99,7 +99,10 @@ try {
         taxa_plataforma REAL NOT NULL,
         valor_evento REAL NOT NULL,
         nif TEXT,
+        nome_titular TEXT,       /* NOVO: Faz sentido ter o nome impresso no cartão */
         num_cartao TEXT,
+        data_validade TEXT,      /* NOVO: Data de validade (ex: 12/28) */
+        cvc TEXT,                /* NOVO: Código de segurança */
         data_pagamento TEXT DEFAULT CURRENT_TIMESTAMP,
         estado TEXT DEFAULT 'concluido',
         FOREIGN KEY (id_compra) REFERENCES compras(id)
