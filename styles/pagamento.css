@@ -1,0 +1,260 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.fundo-pagamento {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Navbar de Pagamento ── */
+.nav-pagamento {
+    background-color: #1a1a5e;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-voltar {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    width: 80px; /* Mesmo tamanho do espaçador direito para centrar a logo perfeitamente */
+}
+
+.btn-voltar:hover {
+    text-decoration: underline;
+}
+
+/* ── TRUQUE DO LOGO: A Janela de Recorte ── */
+.janela-logo {
+    width: 200px;  /* Largura visível do logo */
+    height: 50px;  /* Altura visível que cabe dentro da navbar */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+.pagamento-img {
+    height: 300px; /* O tamanho gigante original da tua imagem */
+    max-width: none; /* Impede que o Flexbox encolha a imagem automaticamente */
+}
+
+/* ── Layout Principal ── */
+.container-pagamento {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Permite que o ecrã faça scroll se for pequeno */
+    padding: 40px 20px;
+}
+
+.layout-pagamento {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 950px;
+}
+
+/* ── Resumo e Cartão ── */
+.resumo-encomenda, .cartao-pagamento {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.resumo-encomenda {
+    flex: 1;
+}
+
+.cartao-pagamento {
+    flex: 1.2;
+}
+
+h2 {
+    color: #1a1a5e;
+    font-size: 22px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.subtitulo-pagamento {
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.aviso-pagamento {
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.divisor {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+}
+
+/* ── Itens do Resumo ── */
+.lista-itens-resumo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.item-resumo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.item-resumo:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    padding-right: 15px;
+}
+
+.item-nome {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.4;
+}
+
+.item-qtd {
+    font-size: 13px;
+    color: #666;
+}
+
+.item-preco {
+    font-size: 15px;
+    font-weight: bold;
+    color: #111;
+}
+
+/* ── Caixa de Totais ── */
+.caixa-resumo {
+    background-color: #f8f9fb;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.linha-resumo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.linha-resumo:last-child {
+    margin-bottom: 0;
+}
+
+.linha-resumo.total-final {
+    border-top: 1px solid #dde0ec;
+    padding-top: 12px;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+/* ── Formulário ── */
+.grupo-input {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.linha-inputs-metade {
+    display: flex;
+    gap: 15px;
+}
+
+.linha-inputs-metade .metade {
+    flex: 1;
+}
+
+.grupo-input label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.grupo-input input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.grupo-input input:focus {
+    border-color: #1a1a5e;
+}
+
+.msg-erro {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 15px;
+    font-weight: bold;
+}
+
+.btn-confirmar-pagamento {
+    width: 100%;
+    padding: 16px;
+    background-color: #1a1a5e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar-pagamento:hover {
+    background-color: #11113f;
+}
+
+/* ── Responsivo (Telemóveis e Tablets) ── */
+@media screen and (max-width: 768px) {
+    .layout-pagamento {
+        flex-direction: column;
+    }
+    
+    .resumo-encomenda, .cartao-pagamento {
+        width: 100%;
+        padding: 20px;
+    }
+}

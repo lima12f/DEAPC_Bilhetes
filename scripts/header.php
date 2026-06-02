@@ -29,7 +29,7 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
                 <img src="assets/carrinho.svg" alt="Carrinho" style="height: 24px; width: 24px; filter: invert(1);">
             </button>
 
-            <a href="include/logout.php" class="btn-sair">Sair</a>
+            <a href="script/logout.php" class="btn-sair">Sair</a>
 
         <?php else: ?>
             <a href="login.php">Login</a>
