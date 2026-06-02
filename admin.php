@@ -37,8 +37,7 @@ foreach ($eventos as $evento) {
             <img src="images/logo.png" alt="Logo TicketZone" />
         </div>
         <div class="botoes-nav">
-            <button class="botao botao-criar">Criar evento</button>
-            <button class="botao botao-perfil" onclick="location.href='perfil.php'">Perfil</button>
+            <button class="botao botao-criar" onclick="location.href='eventos.php'">Criar evento</button>
             <button class="botao botao-sair" onclick="location.href='scripts/logout.php'">Sair</button>
         </div>
     </nav>
