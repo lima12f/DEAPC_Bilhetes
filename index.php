@@ -11,6 +11,8 @@ include 'scripts/carregar_eventos_homepage.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicketZone</title>
     <link rel="stylesheet" href="styles/style.css">
+    <script src="js/carrinho.js"></script>
+
 </head>
 <body>
 
@@ -118,7 +120,6 @@ include 'scripts/carregar_eventos_homepage.php';
     </footer>
 
     <?php include 'scripts/carrinho_modal.php'; ?>
-    <script src="js/carrinho.js"></script>
 
 </body>
 </html>

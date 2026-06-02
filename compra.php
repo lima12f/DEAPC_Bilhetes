@@ -55,6 +55,9 @@ $bilhetes_esgotados = count($tipos_bilhete) === 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicketZone - <?= htmlspecialchars($evento['nome']) ?></title>
     <link rel="stylesheet" href="styles/style.css">
+        
+    <script src="js/carrinho.js"></script>
+    <script src="js/compra.js"></script> 
 </head>
 <body>
 
@@ -160,6 +163,6 @@ $bilhetes_esgotados = count($tipos_bilhete) === 0;
     </footer>
 
     <?php include 'scripts/carrinho_modal.php'; ?>
-    <script src="js/carrinho.js"></script>
-    <script src="js/compra.js"></script> </body>
+
+</body>
 </html>

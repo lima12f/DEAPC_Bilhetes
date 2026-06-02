@@ -24,6 +24,7 @@ $iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TicketZone - Perfil</title>
     <link rel="stylesheet" href="styles/perfil.css" />
+    <script src="js/carrinho.js"></script>
   </head>
   <body>
 
@@ -59,11 +60,10 @@ $iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
     </main>
 
     <footer>
-        <p>&copy; 2026 TicketZone. Todos os direitos reservados.</p>
+        <p> 2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
 
     <?php include 'scripts/carrinho_modal.php'; ?>
-    <script src="js/carrinho.js"></script>
 
   </body>
 </html>
