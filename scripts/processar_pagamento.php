@@ -123,8 +123,8 @@ try {
     // 11. Sucesso! Commit grava tudo permanentemente.
     $db->commit(); // FIM DA ZONA SEGURA
 
-    // Redirecionar para a fatura/recibo final
-    header("Location: ../sucesso.php?id=" . $id_compra);
+    // Redirecionar para o index com a flag de sucesso
+    header("Location: ../index.php?pagamento=sucesso");
     exit();
 
 } catch (Exception $e) {

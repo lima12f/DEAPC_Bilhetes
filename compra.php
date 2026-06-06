@@ -111,7 +111,7 @@ $bilhetes_esgotados = count($tipos_bilhete) === 0;
                         <div class="info-preco">
                             <select id="seletor-bilhete" class="seletor-bilhete-dropdown" name="id_tipo_bilhete_temp">
                                 <?php foreach ($tipos_bilhete as $bilhete): ?>
-                                    <option value="<?= $bilhete['id'] ?>" data-preco="<?= $bilhete['preco'] ?>">
+                                    <option value="<?= $bilhete['id'] ?>" data-preco="<?= $bilhete['preco'] ?>" data-max="<?= $bilhete['qtd_disponivel'] ?>">
                                         <?= htmlspecialchars($bilhete['nome']) ?> (<?= number_format($bilhete['preco'], 2) ?>€)
                                     </option>
                                 <?php endforeach; ?>
@@ -143,6 +143,8 @@ $bilhetes_esgotados = count($tipos_bilhete) === 0;
 
                     <?php if (isset($_SESSION['id_utilizador'])): ?>
                         <form method="POST" action="scripts/carrinho_adicionar.php" id="form-compra">
+                            <input type="hidden" name="id_evento_retorno" value="<?= $id_evento ?>">
+                            
                             <input type="hidden" name="id_tipo_bilhete" id="input-tipo-escondido" value=""> 
                             <input type="hidden" name="quantidade" id="input-quantidade-escondido" value="1">
                             

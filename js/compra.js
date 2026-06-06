@@ -12,27 +12,36 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const inputQtdEscondido = document.getElementById('input-quantidade-escondido');
     const inputTipoEscondido = document.getElementById('input-tipo-escondido');
+    const inputEventoRetorno = document.getElementById('input-evento-retorno');
 
-    // Se não existir seletor (ex: esgotado), sai do script
     if (!seletorBilhete) return;
 
     function atualizarCalculos() {
-        // Obter quantidade e tipo selecionado
-        let qtd = parseInt(spanQuantidade.innerText);
         let opcaoSelecionada = seletorBilhete.options[seletorBilhete.selectedIndex];
-        
         let preco = parseFloat(opcaoSelecionada.getAttribute('data-preco'));
+        let maxDisponivel = parseInt(opcaoSelecionada.getAttribute('data-max'));
         let idBilhete = opcaoSelecionada.value;
+
+        let qtdAtual = parseInt(spanQuantidade.innerText);
+
+        // O limite máximo é 10 ou o que sobrar de stock (o que for menor)
+        let maxPermitido = Math.min(10, maxDisponivel);
+
+        // Se o utilizador mudou de bilhete e a quantidade atual for maior que o stock do novo bilhete, reduz
+        if (qtdAtual > maxPermitido) {
+            qtdAtual = maxPermitido;
+            spanQuantidade.innerText = qtdAtual;
+        }
 
         // Atualizar inputs hidden para o form POST
         inputTipoEscondido.value = idBilhete;
-        inputQtdEscondido.value = qtd;
+        inputQtdEscondido.value = qtdAtual;
 
         // Atualizar display unitário
         displayPrecoUnitario.innerText = preco.toFixed(2) + '€ uni.';
 
         // Lógica de cálculo
-        let subtotal = preco * qtd;
+        let subtotal = preco * qtdAtual;
         let taxas = subtotal * 0.10;
         let total = subtotal + taxas;
 
@@ -42,15 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
         spanTotal.innerText = total.toFixed(2) + '€';
     }
 
-    // limite min 1, max 10
+    // Botão Mais (Respeitando o Limite)
     btnMais.addEventListener('click', () => {
         let qtd = parseInt(spanQuantidade.innerText);
-        if (qtd < 10) {
+        let opcaoSelecionada = seletorBilhete.options[seletorBilhete.selectedIndex];
+        let maxPermitido = Math.min(10, parseInt(opcaoSelecionada.getAttribute('data-max')));
+
+        if (qtd < maxPermitido) {
             spanQuantidade.innerText = qtd + 1;
             atualizarCalculos();
+        } else {
+            // Efeito visual de recusa (Pistca vermelho ligeiramente)
+            spanQuantidade.style.color = '#d9534f';
+            setTimeout(() => { spanQuantidade.style.color = ''; }, 300);
         }
     });
 
+    // Botão Menos
     btnMenos.addEventListener('click', () => {
         let qtd = parseInt(spanQuantidade.innerText);
         if (qtd > 1) {
@@ -59,9 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Listener para quando o tipo de bilhete muda
     seletorBilhete.addEventListener('change', atualizarCalculos);
-
-    // Inicializar os valores na primeira vez que a página carrega
     atualizarCalculos();
 });

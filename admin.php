@@ -37,6 +37,7 @@ foreach ($eventos as $evento) {
             <img src="images/logo.png" alt="Logo TicketZone" />
         </div>
         <div class="botoes-nav">
+            <button class="botao botao-home" onclick="location.href='index.php'">Início</button>
             <button class="botao botao-criar" onclick="location.href='eventos.php'">Criar evento</button>
             <button class="botao botao-sair" onclick="location.href='scripts/logout.php'">Sair</button>
         </div>
@@ -95,7 +96,7 @@ foreach ($eventos as $evento) {
 
                             <td>
                                 <button class="botao-editar"
-                                        onclick="location.href='editar_evento.php?id=<?= $evento['id'] ?>'">
+                                        onclick="location.href='eventos.php?id=<?= $evento['id'] ?>'">
                                     Editar
                                 </button>
                                 <button class="botao-cancelar"

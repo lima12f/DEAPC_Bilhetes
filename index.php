@@ -126,5 +126,13 @@ include 'scripts/carregar_eventos_homepage.php';
 
     <?php include 'scripts/carrinho_modal.php'; ?>
 
+    <?php if (isset($_GET['pagamento']) && $_GET['pagamento'] === 'sucesso'): ?>
+        <script>
+            // Mostra o alerta definido no guião
+            alert('Pagamento efetuado com sucesso! Os teus bilhetes estão disponíveis para consultano teu perfil.');
+            
+            window.history.replaceState(null, '', window.location.pathname);
+        </script>
+    <?php endif; ?>
 </body>
 </html>

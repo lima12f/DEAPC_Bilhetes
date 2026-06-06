@@ -64,7 +64,7 @@ $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'abert
                 </div>
             </div>
             
-            <form method="POST" action="include/confirmar_compra.php">
+            <form method="POST" action="pagamento.php">
                 <button type="submit" class="btn-pagamento">Finalizar Compra</button>
             </form>
         </div>
