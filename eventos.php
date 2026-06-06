@@ -55,6 +55,8 @@ if (isset($_GET['id'])) {
     <title>TicketZone - <?= $modo ?> Evento</title>
     <link rel="stylesheet" href="styles/admin.css">
     <link rel="stylesheet" href="styles/eventos.css">
+    <script src="js/eventos.js"></script>
+
 </head>
 <body>
     <nav>
@@ -174,6 +176,5 @@ if (isset($_GET['id'])) {
         </form>
     </main>
 
-    <script src="js/eventos.js"></script>
 </body>
 </html>

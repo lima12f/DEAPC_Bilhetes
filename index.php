@@ -91,10 +91,15 @@ include 'scripts/carregar_eventos_homepage.php';
                                 <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
                                 <span>
                                     <?php 
+                                    // Formatar a data de início (Ex: 02/05/2026 14:30)
+                                    $inicio_formatado = date('d/m/Y H:i', strtotime($evento['data_inicio']));
+                                    
                                     if (!empty($evento['data_fim']) && $evento['data_fim'] !== $evento['data_inicio']) {
-                                        echo htmlspecialchars($evento['data_inicio'] . ' a ' . $evento['data_fim']);
+                                        // Formatar a data de fim
+                                        $fim_formatado = date('d/m/Y H:i', strtotime($evento['data_fim']));
+                                        echo htmlspecialchars($inicio_formatado . ' a ' . $fim_formatado);
                                     } else {
-                                        echo htmlspecialchars($evento['data_inicio']);
+                                        echo htmlspecialchars($inicio_formatado);
                                     }
                                     ?>
                                 </span>
