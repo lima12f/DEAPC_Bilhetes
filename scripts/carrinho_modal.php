@@ -7,6 +7,7 @@ include_once 'carrinho_ver.php';
 // 2. Verifica se o parâmetro de URL indica que o carrinho deve iniciar aberto
 $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'aberto') ? 'ativo' : '';
 ?>
+<link rel="stylesheet" href="styles/carrinho.css">
 
 <div id="overlay-carrinho" class="<?php echo $classe_visibilidade; ?>"></div>
 
@@ -39,7 +40,7 @@ $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'abert
                     
                     <form method="POST" action="include/carrinho_remover.php" class="form-remover">
                         <input type="hidden" name="id_item_carrinho" value="<?php echo $item['id_carrinho']; ?>">
-                        <button type="submit" class="btn-remover-item" title="Remover do carrinho">&times;</button>
+                        <button type="submit" class="btn-remover-item" title="Remover do carrinho">x</button>
                     </form>
                 </div>
             <?php endforeach; ?>
@@ -65,7 +66,7 @@ $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'abert
             </div>
             
             <form method="POST" action="pagamento.php">
-                <button type="submit" class="btn-pagamento">Finalizar Compra</button>
+                <button type="submit" class="btn-pagamento-carrinho">Finalizar Compra</button>
             </form>
         </div>
     <?php endif; ?>
