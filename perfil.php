@@ -32,8 +32,8 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
         <h2><?php echo htmlspecialchars($nome_utilizador); ?></h2>
         <p><?php echo htmlspecialchars($email_utilizador); ?></p>
         <ul class="sidebar-menu">
-          <li><a href="#">Os Meus Bilhetes</a></li>
-          <li><a href="include/logout.php">Terminar Sessão</a></li>
+          <li><a href="#bilhetes">Os Meus Bilhetes</a></li>
+          <li><a href="scripts/logout.php">Terminar Sessão</a></li>
         </ul>
       </aside>
 
@@ -41,7 +41,7 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
         <h2>Os Meus Bilhetes</h2>
 
         <?php include 'scripts/carregar_bilhetes.php'; ?>
-
+        <a class="anchor-bilhetes" name="bilhetes"></a>
         <div class="tickets-grid">
           <?php if (empty($bilhetes)): ?>
             <p style="color: #888; font-size: 13px;">Ainda não compraste nenhum bilhete.</p>

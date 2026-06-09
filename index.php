@@ -76,7 +76,6 @@ include 'scripts/carregar_eventos_homepage.php';
         <div id="bloco-cards">
             <?php if (empty($lista_eventos)): ?>
                 <p style="text-align: center; width: 100%; color: #666; font-size: 18px; padding: 40px 0;">
-                    Não encontrámos nenhum evento com estes critérios. Tenta outra pesquisa!
                 </p>
             <?php else: ?>
                 <?php foreach ($lista_eventos as $evento): ?>
@@ -91,7 +90,7 @@ include 'scripts/carregar_eventos_homepage.php';
                                 <img src="assets/calendario.svg" alt="data" class="icone-detalhe">
                                 <span>
                                     <?php 
-                                    // Formatar a data de início (Ex: 02/05/2026 14:30)
+                                    // Formatar a data de início
                                     $inicio_formatado = date('d/m/Y H:i', strtotime($evento['data_inicio']));
                                     
                                     if (!empty($evento['data_fim']) && $evento['data_fim'] !== $evento['data_inicio']) {

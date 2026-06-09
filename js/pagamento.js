@@ -8,7 +8,7 @@ window.onload = function() {
     var campoCVC = document.getElementById('cvc');
     var campoNIF = document.getElementById('nif');
 
-    // ─── FUNÇÕES DE ESTILIZAÇÃO VISUAL (Usando .style e .innerHTML) ───
+    // FUNÇÕES DE ESTILIZAÇÃO VISUAL
     function marcarInvalido(campo, idErro, mensagem) {
         campo.style.borderColor = '#d9534f'; 
         campo.style.backgroundColor = '#fdf0f0';
@@ -30,7 +30,7 @@ window.onload = function() {
         return true;
     }
 
-    // ─── REGRAS DE VALIDAÇÃO (Usando as Expressões Regulares do Guião) ───
+    // REGRAS DE VALIDAÇÃO
     function validarNome() {
         if (campoNome.value == "" || /^[\s]+$/.test(campoNome.value)) {
             return marcarInvalido(campoNome, 'erro-nome', 'O nome é obrigatório.');
@@ -67,7 +67,7 @@ window.onload = function() {
         return marcarValido(campoNIF, 'erro-nif');
     }
 
-    // ─── EVENTOS (Usando onkeyup como descrito no guião) ───
+    // EVENTOS
     campoNome.onkeyup = validarNome;
     
     campoCartao.onkeyup = function() {
@@ -94,7 +94,7 @@ window.onload = function() {
         validarValidade();
     };
 
-    // ─── VERIFICAÇÃO FINAL (Usando onsubmit clássico) ───
+    //  VERIFICAÇÃO FINAL
     form.onsubmit = function() {
         var isNomeValid = validarNome();
         var isCartaoValid = validarCartao();

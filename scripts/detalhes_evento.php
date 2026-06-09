@@ -1,6 +1,6 @@
 <?php
 // scripts/detalhes_evento.php
-require_once 'conexao.php'; // Assume que tens um ficheiro que cria a $pdo para SQLite
+require_once 'conexao.php';
 
 // Verifica se foi passado um ID na URL
 $id_evento = isset($_GET['id']) ? (int)$_GET['id'] : 0;
