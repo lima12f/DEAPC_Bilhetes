@@ -58,7 +58,7 @@ foreach ($eventos as $evento) {
                 </thead>
                 <tbody>
                     <tr>
-                        <!-- number_format formata o número: separador de milhar = '.' e decimais = ',' -->
+                        <!-- number_format formata o número -->
                         <td><?= number_format($total_bilhetes_geral, 0, ',', '.') ?></td>
                         <td><?= number_format($total_ganhos_geral,   2, ',', '.') ?>€</td>
                     </tr>
@@ -100,7 +100,7 @@ foreach ($eventos as $evento) {
                                     Editar
                                 </button>
                                 <button class="botao-cancelar"
-                                        onclick="location.href='cancelar_evento.php?id=<?= $evento['id'] ?>'">
+                                        onclick="location.href='scripts/cancelar_evento.php?id=<?= $evento['id'] ?>'">
                                     x
                                 </button>
                             </td>

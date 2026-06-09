@@ -2,6 +2,7 @@
 
 session_start();
 
+// Verifica se o utilizador tem sessão iniciada e é admin
 if (!isset($_SESSION['id_utilizador']) || $_SESSION['tipo'] !== 'admin') {
     header("Location: ../login.php");
     exit();
@@ -10,7 +11,10 @@ if (!isset($_SESSION['id_utilizador']) || $_SESSION['tipo'] !== 'admin') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new SQLite3('../ticketzone.db');
     
-    // Obter dados do evento
+    // Ativa as foreign keys por segurança
+    $db->exec("PRAGMA foreign_keys = ON;");
+    
+    // Obter dados do evento do formulário POST
     $id_evento = isset($_POST['id_evento']) ? (int)$_POST['id_evento'] : null;
     $nome = trim($_POST['nome']);
     $id_categoria = (int)$_POST['id_categoria'];
@@ -41,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare("UPDATE eventos SET nome = :nome, descricao = :desc, data_inicio = :d_ini, data_fim = :d_fim, local = :local, imagem = :img, estado = :estado, id_categoria = :id_cat WHERE id = :id");
             $stmt->bindValue(':img', $caminho_imagem, SQLITE3_TEXT);
         } else {
+            // Não atualiza a imagem se não tiver sido feito um novo upload
             $stmt = $db->prepare("UPDATE eventos SET nome = :nome, descricao = :desc, data_inicio = :d_ini, data_fim = :d_fim, local = :local, estado = :estado, id_categoria = :id_cat WHERE id = :id");
         }
         $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
@@ -53,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':id_admin', $id_admin, SQLITE3_INTEGER);
     }
 
+    // Bind dos parâmetros comuns a Criar e Editar
     $stmt->bindValue(':nome', $nome, SQLITE3_TEXT);
     $stmt->bindValue(':desc', $descricao, SQLITE3_TEXT);
     $stmt->bindValue(':d_ini', $data_inicio, SQLITE3_TEXT);
@@ -61,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindValue(':id_cat', $id_categoria, SQLITE3_INTEGER);
     $stmt->execute();
 
-    // Se foi um novo evento, captura o ID gerado pelo SQLite
+    // Se foi um novo evento, captura o ID recém-gerado pelo SQLite
     if (!$id_evento) {
         $id_evento = $db->lastInsertRowID();
     }
@@ -70,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['bilhete_nome']) && is_array($_POST['bilhete_nome'])) {
         
         $stmt_insert_bilhete = $db->prepare("INSERT INTO tipos_bilhete (id_evento, nome, preco, qtd_total, qtd_disponivel, data_valido_inicio, data_valido_fim) VALUES (:id_ev, :nome, :preco, :qtd, :qtd, :d_ini, :d_fim)");
-        $stmt_update_bilhete = $db->prepare("UPDATE tipos_bilhete SET nome = :nome, preco = :preco, qtd_total = :qtd, data_valido_inicio = :d_ini, data_valido_fim = :d_fim WHERE id = :id_bilhete AND id_evento = :id_ev");
 
         for ($i = 0; $i < count($_POST['bilhete_nome']); $i++) {
             $b_id = (int)$_POST['bilhete_id'][$i];
@@ -86,26 +91,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt_insert_bilhete->bindValue(':id_ev', $id_evento, SQLITE3_INTEGER);
                     $stmt_insert_bilhete->bindValue(':nome', $b_nome, SQLITE3_TEXT);
                     $stmt_insert_bilhete->bindValue(':preco', $b_preco, SQLITE3_FLOAT);
+                    // Como é novo, a quantidade disponível é igual à quantidade total
                     $stmt_insert_bilhete->bindValue(':qtd', $b_qtd, SQLITE3_INTEGER);
                     $stmt_insert_bilhete->bindValue(':d_ini', $b_d_ini, SQLITE3_TEXT);
                     $stmt_insert_bilhete->bindValue(':d_fim', $b_d_fim, SQLITE3_TEXT);
                     $stmt_insert_bilhete->execute();
                 } else {
                     // É uma atualização de um registo existente
-                    $stmt_update_bilhete->bindValue(':id_bilhete', $b_id, SQLITE3_INTEGER);
-                    $stmt_update_bilhete->bindValue(':id_ev', $id_evento, SQLITE3_INTEGER);
-                    $stmt_update_bilhete->bindValue(':nome', $b_nome, SQLITE3_TEXT);
-                    $stmt_update_bilhete->bindValue(':preco', $b_preco, SQLITE3_FLOAT);
-                    $stmt_update_bilhete->bindValue(':qtd', $b_qtd, SQLITE3_INTEGER);
-                    $stmt_update_bilhete->bindValue(':d_ini', $b_d_ini, SQLITE3_TEXT);
-                    $stmt_update_bilhete->bindValue(':d_fim', $b_d_fim, SQLITE3_TEXT);
-                    $stmt_update_bilhete->execute();
+                    // 1. Obter os dados antigos para ajustar a quantidade disponível de forma correta
+                    $stmt_old = $db->prepare("SELECT qtd_total, qtd_disponivel FROM tipos_bilhete WHERE id = :id");
+                    $stmt_old->bindValue(':id', $b_id, SQLITE3_INTEGER);
+                    $res_old = $stmt_old->execute();
+                    $old_data = $res_old->fetchArray(SQLITE3_ASSOC);
+                    
+                    if ($old_data) {
+                        // Calcula a diferença de bilhetes
+                        $diferenca = $b_qtd - $old_data['qtd_total'];
+                        $nova_qtd_disponivel = $old_data['qtd_disponivel'] + $diferenca;
+                        
+                        // Garante que não ficam bilhetes negativos caso o admin reduza muito a quantidade
+                        if ($nova_qtd_disponivel < 0) {
+                            $nova_qtd_disponivel = 0;
+                        }
+
+                        // Prepara o UPDATE com a nova quantidade disponível calculada
+                        $stmt_update_bilhete = $db->prepare("UPDATE tipos_bilhete SET nome = :nome, preco = :preco, qtd_total = :qtd, qtd_disponivel = :qtd_disp, data_valido_inicio = :d_ini, data_valido_fim = :d_fim WHERE id = :id_bilhete AND id_evento = :id_ev");
+                        
+                        $stmt_update_bilhete->bindValue(':id_bilhete', $b_id, SQLITE3_INTEGER);
+                        $stmt_update_bilhete->bindValue(':id_ev', $id_evento, SQLITE3_INTEGER);
+                        $stmt_update_bilhete->bindValue(':nome', $b_nome, SQLITE3_TEXT);
+                        $stmt_update_bilhete->bindValue(':preco', $b_preco, SQLITE3_FLOAT);
+                        $stmt_update_bilhete->bindValue(':qtd', $b_qtd, SQLITE3_INTEGER);
+                        $stmt_update_bilhete->bindValue(':qtd_disp', $nova_qtd_disponivel, SQLITE3_INTEGER);
+                        $stmt_update_bilhete->bindValue(':d_ini', $b_d_ini, SQLITE3_TEXT);
+                        $stmt_update_bilhete->bindValue(':d_fim', $b_d_fim, SQLITE3_TEXT);
+                        $stmt_update_bilhete->execute();
+                    }
                 }
             }
         }
     }
 
-    // Retorna ao painel de administração com indicador de sucesso
+    // Fecha a ligação
+    $db->close();
+
+    // Retorna à dashboard de administração com o indicador de sucesso
     header("Location: ../admin.php?sucesso=1");
     exit();
 }
