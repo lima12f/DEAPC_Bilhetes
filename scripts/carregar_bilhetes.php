@@ -14,6 +14,7 @@ if ($id_utilizador) {
         SELECT
             e.nome           AS nome_evento,
             e.data_inicio    AS data_evento,
+            e.data_fim       AS data_evento_fim,
             e.local          AS local_evento,
             e.imagem         AS imagem,
             tb.nome          AS tipo_bilhete,

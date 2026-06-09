@@ -48,8 +48,11 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
           <?php else: ?>
             <?php foreach ($bilhetes as $bilhete): ?>
               <?php
-                $data_evento_fmt = date('d \d\e F \d\e Y, H:i', strtotime($bilhete['data_evento']));
-                $data_compra_fmt = date('d \d\e F \d\e Y, H:i', strtotime($bilhete['data_compra']));
+                $data_compra_fmt = date('d/m/Y H:i', strtotime($bilhete['data_compra']));
+                $inicio_evento_fmt = date('d/m/Y H:i', strtotime($bilhete['data_evento']));
+                $fim_evento_fmt = !empty($bilhete['data_evento_fim']) && $bilhete['data_evento_fim'] !== $bilhete['data_evento']
+                  ? date('d/m/Y H:i', strtotime($bilhete['data_evento_fim']))
+                  : null;
               ?>
               <div class="ticket-card">
                 <?php if (!empty($bilhete['imagem'])): ?>
@@ -62,11 +65,11 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
                 <div class="ticket-card-info">
                   <span class="ticket-card-badge"><?php echo htmlspecialchars($bilhete['tipo_bilhete']); ?></span>
                   <h3><?php echo htmlspecialchars($bilhete['nome_evento']); ?></h3>
-                  <p><span>Data:</span> <?php echo $data_evento_fmt; ?></p>
+                  <p><span>Data:</span> <?php echo htmlspecialchars($fim_evento_fmt ? $inicio_evento_fmt . ' a ' . $fim_evento_fmt : $inicio_evento_fmt); ?></p>
                   <p><span>Local:</span> <?php echo htmlspecialchars($bilhete['local_evento']); ?></p>
                   <p><span>Quantidade:</span> <?php echo htmlspecialchars($bilhete['quantidade']); ?></p>
                   <p><span>Preco unit.:</span> <?php echo number_format($bilhete['preco_unitario'], 2); ?>€</p>
-                  <p><span>Comprado em:</span> <?php echo $data_compra_fmt; ?></p>
+                  <p><span>Comprado em:</span> <?php echo htmlspecialchars($data_compra_fmt); ?></p>
                   <p><span>ID Pagamento:</span> #<?php echo htmlspecialchars($bilhete['id_pagamento'] ?? 'N/A'); ?></p>
                 </div>
               </div>
