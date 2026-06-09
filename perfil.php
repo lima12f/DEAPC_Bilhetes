@@ -40,7 +40,7 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
       <section class="content">
         <h2>Os Meus Bilhetes</h2>
 
-        <?php include 'scripts/carregar_entradas.php'; ?>
+        <?php include 'scripts/carregar_bilhetes.php'; ?>
 
         <div class="tickets-grid">
           <?php if (empty($bilhetes)): ?>

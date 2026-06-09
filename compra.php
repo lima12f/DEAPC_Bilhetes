@@ -77,12 +77,16 @@ $bilhetes_esgotados = count($tipos_bilhete) === 0;
                         <img src="assets/calendario.svg" alt="Data" class="badge-icone">
                         <span>
                             <?php 
-                            // Lógica de datas idêntica ao teu index.php
-                            if (!empty($evento['data_fim']) && $evento['data_fim'] !== $evento['data_inicio']) {
-                                echo htmlspecialchars($evento['data_inicio'] . ' a ' . $evento['data_fim']);
-                            } else {
-                                echo htmlspecialchars($evento['data_inicio']);
-                            }
+                                // Formatar a data de início (Ex: 02/05/2026 14:30)
+                                $inicio_formatado = date('d/m/Y H:i', strtotime($evento['data_inicio']));
+                                
+                                if (!empty($evento['data_fim']) && $evento['data_fim'] !== $evento['data_inicio']) {
+                                    // Formatar a data de fim
+                                    $fim_formatado = date('d/m/Y H:i', strtotime($evento['data_fim']));
+                                    echo htmlspecialchars($inicio_formatado . ' a ' . $fim_formatado);
+                                } else {
+                                    echo htmlspecialchars($inicio_formatado);
+                                }
                             ?>
                         </span>
                     </div>
