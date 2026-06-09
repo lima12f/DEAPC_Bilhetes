@@ -1,21 +1,16 @@
 <?php
-// Inicia a sessão
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Proteção da página: se o utilizador não estiver logado, redireciona para o login
 if (!isset($_SESSION['id_utilizador'])) {
     header("Location: login.php");
     exit;
 }
 
-// Ir buscar os dados guardados na sessão após o login correto
-$nome_utilizador = $_SESSION['username'];
+$nome_utilizador  = $_SESSION['username'];
 $email_utilizador = $_SESSION['email'];
-
-// Gerar as iniciais para o Avatar (ex: apanha as primeiras 2 letras do username em Maiúsculas)
-$iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
+$iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -33,26 +28,50 @@ $iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
     <main class="profile-container">
 
       <aside class="sidebar">
-
         <div class="avatar"><?php echo htmlspecialchars($iniciais_avatar); ?></div>
-
         <h2><?php echo htmlspecialchars($nome_utilizador); ?></h2>
         <p><?php echo htmlspecialchars($email_utilizador); ?></p>
-
         <ul class="sidebar-menu">
           <li><a href="#">Os Meus Bilhetes</a></li>
           <li><a href="include/logout.php">Terminar Sessão</a></li>
         </ul>
-
       </aside>
 
       <section class="content">
         <h2>Os Meus Bilhetes</h2>
 
+        <?php include 'scripts/carregar_entradas.php'; ?>
+
         <div class="tickets-grid">
-          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
-          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
-          <div class="ticket-card" style="display: flex; align-items: center; justify-content: center; color: #888; font-size: 13px;">Brevemente</div>
+          <?php if (empty($bilhetes)): ?>
+            <p style="color: #888; font-size: 13px;">Ainda não compraste nenhum bilhete.</p>
+          <?php else: ?>
+            <?php foreach ($bilhetes as $bilhete): ?>
+              <?php
+                $data_evento_fmt = date('d \d\e F \d\e Y, H:i', strtotime($bilhete['data_evento']));
+                $data_compra_fmt = date('d \d\e F \d\e Y, H:i', strtotime($bilhete['data_compra']));
+              ?>
+              <div class="ticket-card">
+                <?php if (!empty($bilhete['imagem'])): ?>
+                  <img class="ticket-card-imagem"
+                       src="<?php echo htmlspecialchars($bilhete['imagem']); ?>"
+                       alt="<?php echo htmlspecialchars($bilhete['nome_evento']); ?>" />
+                <?php else: ?>
+                  <div class="ticket-card-imagem-placeholder">Sem imagem</div>
+                <?php endif; ?>
+                <div class="ticket-card-info">
+                  <span class="ticket-card-badge"><?php echo htmlspecialchars($bilhete['tipo_bilhete']); ?></span>
+                  <h3><?php echo htmlspecialchars($bilhete['nome_evento']); ?></h3>
+                  <p><span>Data:</span> <?php echo $data_evento_fmt; ?></p>
+                  <p><span>Local:</span> <?php echo htmlspecialchars($bilhete['local_evento']); ?></p>
+                  <p><span>Quantidade:</span> <?php echo htmlspecialchars($bilhete['quantidade']); ?></p>
+                  <p><span>Preco unit.:</span> <?php echo number_format($bilhete['preco_unitario'], 2); ?>€</p>
+                  <p><span>Comprado em:</span> <?php echo $data_compra_fmt; ?></p>
+                  <p><span>ID Pagamento:</span> #<?php echo htmlspecialchars($bilhete['id_pagamento'] ?? 'N/A'); ?></p>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </div>
 
       </section>
@@ -60,7 +79,7 @@ $iniciais_avatar = strtoupper(substr($nome_utilizador, 0, 2));
     </main>
 
     <footer>
-        <p> 2026 TicketZone. Todos os direitos reservados.</p>
+        <p>2026 TicketZone. Todos os direitos reservados.</p>
     </footer>
 
     <?php include 'scripts/carrinho_modal.php'; ?>
