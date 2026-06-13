@@ -13,10 +13,16 @@ $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'abert
 
 <div id="modal-carrinho" class="<?php echo $classe_visibilidade; ?>">
     <div class="cabecalho-carrinho">
-        <h2>O teu Carrinho</h2>
-        <button id="fechar-carrinho">&times;</button>
+         <h2>O teu Carrinho</h2>
+        <button id="fechar-carrinho">x</button>
     </div>
-    
+        
+    <?php if (!empty($itens_carrinho)): ?>
+        <div class="aviso-reserva">
+            <strong>Atenção:</strong> Os teus bilhetes estão reservados por <strong>15 minutos</strong>. Finaliza a compra!
+        </div>
+    <?php endif; ?>
+
     <div class="conteudo-carrinho">
         <?php if (empty($itens_carrinho)): ?>
             <p class="carrinho-vazio">O teu carrinho está vazio.</p>

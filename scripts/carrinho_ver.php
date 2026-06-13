@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+include_once __DIR__ . '/limpar_reservas.php';
+
 // Inicializamos as variáveis que a View (carrinho_modal.php) vai precisar
 $itens_carrinho = [];
 $subtotal = 0;

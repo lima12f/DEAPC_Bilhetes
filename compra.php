@@ -4,6 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+include_once __DIR__ . '/scripts/limpar_reservas.php';
+
 // 2. Conexão à base de dados SQLite (na raiz do projeto)
 try {
     $pdo = new PDO('sqlite:ticketzone.db');

@@ -42,6 +42,21 @@
   font-size: 20px;
 }
 
+/* ── Aviso de Tempo de Reserva ── */
+.aviso-reserva {
+  background-color: #fef8e6; /* Fundo amarelo muito suave */
+  color: #8a6d3b; /* Texto em tom terra para ser legível mas não agressivo */
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 13px;
+  border-bottom: 1px solid #faebcc; /* Borda inferior subtil */
+}
+
+.aviso-reserva strong {
+  font-weight: 600;
+  color: #66512c; /* Destaque ligeiramente mais escuro no bold */
+}
+
 #fechar-carrinho {
   background: none; border: none;
   color: white; font-size: 28px;
