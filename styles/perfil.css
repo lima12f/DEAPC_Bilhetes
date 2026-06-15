@@ -253,3 +253,49 @@ footer {
     width: 100%;
   }
 }
+
+/* ── Correções do Header para Mobile (Versão Compacta) ── */
+@media screen and (max-width: 650px) {
+  /* 1. Reduz bastante o espaçamento nas laterais do ecrã */
+  header {
+    padding: 10px 10px; 
+  }
+
+  /* 2. Encolhe mais o logo para libertar espaço para o menu */
+  header .logo-link img {
+    height: 180px;
+    margin-left: -50px;
+  }
+
+  /* 3. Força um gap mínimo entre os itens da barra de navegação */
+  header nav {
+    gap: 10px !important;
+  }
+
+  /* 4. Letra um bocadinho mais pequena nos links (Início, etc.) */
+  header nav a {
+    margin-left: 0 !important;
+    font-size: 13px;
+  }
+
+  /* 5. Ajusta o botão do carrinho (ícone ligeiramente menor) */
+  header nav button#btn-abrir-carrinho {
+    padding: 0;
+  }
+  header nav button#btn-abrir-carrinho img {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
+  /* 6. Remove a linha vertical e reduz o espaçamento do botão Sair */
+  header nav a.btn-sair {
+    border-left: none; /* Tira a barra para poupar espaço */
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  /* 7. Reduz o botão do perfil (caso ele exista na página) */
+  .btn-perfil {
+    padding: 4px 8px !important;
+  }
+}
