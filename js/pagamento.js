@@ -49,8 +49,34 @@ window.onload = function() {
     }
 
     function validarValidade() {
-        if (campoValidade.value == "") return marcarInvalido(campoValidade, 'erro-validade', 'Obrigatório.');
-        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(campoValidade.value)) return marcarInvalido(campoValidade, 'erro-validade', 'Use MM/AA.');
+        // 1. Verificações de formato base que já tinhas
+        if (campoValidade.value == "") {
+            return marcarInvalido(campoValidade, 'erro-validade', 'Obrigatório.');
+        }
+        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(campoValidade.value)) {
+            return marcarInvalido(campoValidade, 'erro-validade', 'Use MM/AA.');
+        }
+
+        // 2. Extrair o Mês e o Ano do input (ex: "05/26" -> mes=5, ano=26)
+        var partes = campoValidade.value.split('/');
+        var mesInput = parseInt(partes[0], 10);
+        var anoInput = parseInt(partes[1], 10);
+
+        // 3. Obter a data atual do navegador do utilizador
+        var dataAtual = new Date();
+        var mesAtual = dataAtual.getMonth() + 1; // getMonth() devolve 0 a 11, por isso somamos 1
+        var anoAtual = dataAtual.getFullYear() % 100; // getFullYear dá 2026, com % 100 ficamos só com o "26"
+
+        // 4. Validar se a data já passou
+        if (anoInput < anoAtual) {
+            // Se o ano introduzido for menor que o ano atual, está expirado
+            return marcarInvalido(campoValidade, 'erro-validade', 'Cartão expirado (Ano).');
+        } else if (anoInput === anoAtual && mesInput < mesAtual) {
+            // Se for o mesmo ano, mas o mês introduzido já passou, está expirado
+            return marcarInvalido(campoValidade, 'erro-validade', 'Cartão expirado (Mês).');
+        }
+
+        // Se passou em todas as regras, está válido!
         return marcarValido(campoValidade, 'erro-validade');
     }
 
