@@ -48,22 +48,34 @@ nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
 }
 
-/* BOTÃO: CRIAR EVENTO (Ação Principal) - AZUL MAIS ESCURO E ELEGANTE */
+/* BOTÃO PRINCIPAL (EX: GUARDAR EVENTO) - AZUL DO HEADER (#1a1a5e) */
 .botao-criar {
-    background-color: #2B6CB0; 
+    background-color: #1a1a5e; 
     color: white;
-    border: none;
-    box-shadow: 0 2px 4px rgba(43, 108, 176, 0.3);
+    border: 1px solid #1a1a5e;
+    box-shadow: 0 2px 4px rgba(26, 26, 94, 0.3);
     font-weight: 600;
 }
 
 .botao-criar:hover {
-    background-color: #2C5282; /* Ligeiramente mais escuro para o hover */
+    background-color: #2a2a7a; 
+    border-color: #2a2a7a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(43, 108, 176, 0.4);
+    box-shadow: 0 4px 8px rgba(26, 26, 94, 0.4);
+}
+
+/* TRUQUE: Se o botão estiver DENTRO da Navbar, fica branco com letra escura */
+nav .botao-criar {
+    background-color: white;
+    color: #1a1a5e;
+    border: 1px solid white;
+}
+
+nav .botao-criar:hover {
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
 }
 
 /* BOTÃO: VOLTAR AO DASHBOARD (Ação de Recuo) */
@@ -160,6 +172,51 @@ main {
     font-weight: 500;
 }
 
+/* BARRA DE FILTROS */
+.filtro-bar {
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 20px;
+}
+
+.filtro-bar form {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filtro-bar select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fbfbfc;
+    outline: none;
+    transition: all 0.2s;
+    min-width: 180px;
+}
+
+.filtro-bar select:focus {
+    border-color: #1a1a5e;
+    background-color: white;
+}
+
+.botao-limpar {
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.botao-limpar:hover {
+    color: #c5221f;
+    text-decoration: underline;
+}
+
 /* TABELAS MODERNAS */
 .tabela-container {
     background: white;
@@ -206,7 +263,7 @@ main {
 
 .destaque-lucro {
     font-weight: bold;
-    color: #2B6CB0; /* AZUL MAIS ESCURO E ELEGANTE */
+    color: #1a1a5e; /* AZUL DO HEADER */
 }
 
 .texto-secundario {
@@ -233,6 +290,11 @@ main {
     color: #c5221f;
 }
 
+.badge-expirado {
+    background-color: #f1f3f5;
+    color: #6c757d;
+}
+
 .badge-admin {
     background-color: #fef7e0;
     color: #b06000;
@@ -244,7 +306,7 @@ main {
 }
 
 /* BOTÕES DE AÇÃO NA TABELA */
-.botao-editar, .botao-cancelar {
+.botao-editar, .botao-cancelar, .botao-reativar {
     padding: 6px 14px;
     border-radius: 4px;
     font-size: 13px;
@@ -255,14 +317,14 @@ main {
 }
 
 .botao-editar {
-    background-color: #2B6CB0; /* AZUL MAIS ESCURO E ELEGANTE */
+    background-color: #1a1a5e; /* Azul escuro */
     color: white;
-    border: 1px solid #2B6CB0;
+    border: 1px solid #1a1a5e;
 }
 
 .botao-editar:hover {
-    background-color: #2C5282;
-    border-color: #2C5282;
+    background-color: #2a2a7a;
+    border-color: #2a2a7a;
 }
 
 .botao-cancelar {
@@ -273,6 +335,17 @@ main {
 
 .botao-cancelar:hover {
     background-color: #dc3545;
+    color: white;
+}
+
+.botao-reativar {
+    background-color: white;
+    color: #137333; /* Verde que combina com a badge Ativo */
+    border: 1px solid #137333;
+}
+
+.botao-reativar:hover {
+    background-color: #137333;
     color: white;
 }
 
@@ -295,16 +368,13 @@ footer {
     border-top: 2px solid #eaeaea;
 }
 
-/* Grelha perfeita para alinhar títulos e caixas */
 .cabecalho-bilhetes, .linha-bilhete {
     display: grid;
-    /* Tamanhos das colunas: Nome, Preço, Qtd, Data Ini, Data Fim, Botão X */
     grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr 40px;
     gap: 12px;
     align-items: center;
 }
 
-/* ALINHAMENTO DOS TÍTULOS */
 .cabecalho-bilhetes {
     font-weight: 600;
     font-size: 13px;
@@ -312,7 +382,6 @@ footer {
     margin-bottom: 8px;
 }
 
-/* Centrar todos os títulos exceto o primeiro (Nome) */
 .cabecalho-bilhetes > div {
     text-align: center; 
 }
@@ -321,7 +390,6 @@ footer {
     padding-left: 10px; 
 }
 
-/* ALINHAMENTO DAS CAIXAS */
 .linha-bilhete {
     margin-bottom: 12px;
 }
@@ -337,29 +405,24 @@ footer {
     transition: border-color 0.2s;
 }
 
-/* Força a centrar o texto de TODAS as caixas, EXCETO a que tem o nome do bilhete */
 .linha-bilhete input:not([name="bilhete_nome[]"]) {
     text-align: center;
 }
 
 .input-bilhete:focus {
     outline: none;
-    border-color: #2B6CB0; /* AZUL MAIS ESCURO E ELEGANTE */
+    border-color: #1a1a5e; /* Azul do foco */
 }
 
-/* --- REMOVER SETAS DOS INPUTS NUMBER --- */
-/* Esconde as setas no Chrome, Safari, Edge e Opera */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-/* Esconde as setas no Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
 }
 
-/* O botão do "X" */
 .btn-remover-bilhete {
     height: 38px;
     background-color: #ffeaea;

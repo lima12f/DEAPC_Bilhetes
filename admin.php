@@ -1,17 +1,19 @@
 <?php
-// Inicia a sessão para podermos verificar se o utilizador está autenticado
 session_start();
 
-// Se não é admin, retorna para o login
 if (!isset($_SESSION['id_utilizador']) || $_SESSION['tipo'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
+// Atualiza automaticamente eventos cujo prazo já expirou
+require_once __DIR__ . '/scripts/atualizar_estados.php';
+
+// Só depois de atualizados, carrega os dados para a página com os filtros aplicados
 require_once __DIR__ . '/scripts/carregar_eventos.php';
 require_once __DIR__ . '/scripts/carregar_entradas.php';
 
-// Totais para a tabela de resumo
+// Totais para a tabela de resumo baseados na pesquisa atual
 $total_bilhetes_geral = 0;
 $total_vendas_geral   = 0;
 $total_lucro_geral    = 0;
@@ -29,12 +31,10 @@ foreach ($eventos as $evento) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TicketZone - Administrador</title>
-    <!-- Adicionado ?v=time() para forçar o navegador a limpar a cache do CSS -->
     <link rel="stylesheet" href="styles/admin.css?v=<?= time() ?>" />
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav>
         <div class="logo-nav">
             <img src="images/logo.png" alt="Logo TicketZone" />
@@ -45,7 +45,6 @@ foreach ($eventos as $evento) {
         </div>
     </nav>
 
-    <!-- Principal -->
     <main>
 
         <div class="cabecalho-pagina">
@@ -53,7 +52,6 @@ foreach ($eventos as $evento) {
             <p>Gestão da plataforma: resumo financeiro, eventos ativos e acessos de utilizadores.</p>
         </div>
 
-        <!-- NOVO FORMATO DE RESUMO (CARTÕES) -->
         <div class="resumo-cards">
             <div class="card">
                 <div class="card-numero"><?= number_format($total_bilhetes_geral, 0, ',', '.') ?></div>
@@ -71,6 +69,29 @@ foreach ($eventos as $evento) {
 
         <h3 class="titulo-seccao">Gerir Eventos</h3>
         
+        <div class="filtro-bar">
+            <form method="GET" action="admin.php">
+                <select name="estado">
+                    <option value="todos" <?= (isset($_GET['estado']) && $_GET['estado'] == 'todos') ? 'selected' : '' ?>>Todos os Estados</option>
+                    <option value="ativo" <?= (isset($_GET['estado']) && $_GET['estado'] == 'ativo') ? 'selected' : '' ?>>Ativo</option>
+                    <option value="expirado" <?= (isset($_GET['estado']) && $_GET['estado'] == 'expirado') ? 'selected' : '' ?>>Expirado</option>
+                    <option value="cancelado" <?= (isset($_GET['estado']) && $_GET['estado'] == 'cancelado') ? 'selected' : '' ?>>Cancelado</option>
+                </select>
+                
+                <select name="categoria">
+                    <option value="0">Todas as Categorias</option>
+                    <?php foreach ($categorias as $cat): ?>
+                        <option value="<?= $cat['id'] ?>" <?= (isset($_GET['categoria']) && $_GET['categoria'] == $cat['id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($cat['nome']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                
+                <button type="submit" class="botao botao-criar" style="padding: 8px 18px;">Filtrar</button>
+                <a href="admin.php" class="botao-limpar">Remover Filtros</a>
+            </form>
+        </div>
+
         <div class="tabela-container">
             <table class="tabela-moderna">
                 <thead>
@@ -90,7 +111,7 @@ foreach ($eventos as $evento) {
                     <?php if (empty($eventos)): ?>
                         <tr>
                             <td colspan="8" style="text-align: center; color: #888; padding: 30px;">
-                                Nenhum evento encontrado.
+                                Nenhum evento encontrado para estes filtros.
                             </td>
                         </tr>
                     <?php else: ?>
@@ -98,8 +119,16 @@ foreach ($eventos as $evento) {
                             <tr>
                                 <td class="destaque-nome"><?= htmlspecialchars($evento['nome']) ?></td>
                                 
-                                <!-- Aplicação do Badge de Cor -->
-                                <?php $classe_badge = strtolower($evento['estado']) === 'ativo' ? 'badge-ativo' : 'badge-cancelado'; ?>
+                                <?php 
+                                    $est = strtolower($evento['estado']);
+                                    if ($est === 'ativo') {
+                                        $classe_badge = 'badge-ativo';
+                                    } elseif ($est === 'expirado') {
+                                        $classe_badge = 'badge-expirado';
+                                    } else {
+                                        $classe_badge = 'badge-cancelado';
+                                    }
+                                ?>
                                 <td>
                                     <span class="badge <?= $classe_badge ?>">
                                         <?= ucfirst(htmlspecialchars($evento['estado'])) ?>
@@ -113,12 +142,22 @@ foreach ($eventos as $evento) {
                                 <td class="destaque-lucro"><?= number_format($evento['lucro_plataforma'], 2, ',', '.') ?>€</td>
 
                                 <td>
-                                    <button class="botao-editar" onclick="location.href='eventos.php?id=<?= $evento['id'] ?>'">
-                                        Editar
-                                    </button>
-                                    <button class="botao-cancelar" onclick="location.href='scripts/cancelar_evento.php?id=<?= $evento['id'] ?>'">
-                                        Remover
-                                    </button>
+                                    <?php if ($est === 'ativo'): ?>
+                                        <button class="botao-editar" onclick="location.href='eventos.php?id=<?= $evento['id'] ?>'">
+                                            Editar
+                                        </button>
+                                        <button class="botao-cancelar" onclick="location.href='scripts/cancelar_evento.php?id=<?= $evento['id'] ?>'">
+                                            Cancelar
+                                        </button>
+                                        
+                                    <?php elseif ($est === 'cancelado'): ?>
+                                        <button class="botao-reativar" onclick="location.href='scripts/reativar_evento.php?id=<?= $evento['id'] ?>'">
+                                            Reativar
+                                        </button>
+
+                                    <?php elseif ($est === 'expirado'): ?>
+                                        <span class="texto-secundario" style="font-size: 12px; font-style: italic;">Sem ações</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -154,7 +193,6 @@ foreach ($eventos as $evento) {
                                 <td class="destaque-nome"><?= htmlspecialchars($entrada['username']) ?></td>
                                 <td><?= htmlspecialchars($entrada['email']) ?></td>
                                 
-                                <!-- Badge para o tipo de utilizador -->
                                 <?php $classe_tipo = strtolower($entrada['tipo']) === 'admin' ? 'badge-admin' : 'badge-cliente'; ?>
                                 <td>
                                     <span class="badge <?= $classe_tipo ?>">
@@ -178,7 +216,6 @@ foreach ($eventos as $evento) {
 
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <p>© 2026 TicketZone - Todos os direitos reservados.</p>
     </footer>

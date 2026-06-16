@@ -37,6 +37,12 @@ if (isset($_GET['id'])) {
         header("Location: admin.php");
         exit();
     }
+
+    // IMPEDE a edição de eventos que já ocorreram ou que foram cancelados
+    if ($evento['estado'] === 'expirado' || $evento['estado'] === 'cancelado') {
+        header("Location: admin.php?erro=estado_invalido");
+        exit();
+    }
     
     // Carrega os Tipos de Bilhete associados ao Evento
     $stmt_bilhetes = $db->prepare("SELECT * FROM tipos_bilhete WHERE id_evento = :id");
@@ -143,7 +149,6 @@ if (isset($_GET['id'])) {
             <hr class="divisor-linha">
             <h3 style="margin-bottom: 20px;">Tipos de Bilhete</h3>
 
-            <!-- Cabeçalho da Grelha -->
             <div class="cabecalho-bilhetes">
                 <div>Nome do Bilhete</div>
                 <div>Preço (€)</div>
