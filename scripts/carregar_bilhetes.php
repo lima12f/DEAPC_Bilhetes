@@ -30,7 +30,10 @@ if ($id_utilizador) {
         JOIN eventos e         ON e.id              = tb.id_evento
         LEFT JOIN pagamentos p ON p.id_compra       = c.id
         WHERE c.id_utilizador = :id
-        AND substr(e.data_inicio, 1, 10) >= date('now')
+        AND (
+            substr(e.data_fim, 1, 10) >= date('now')
+            OR e.estado = 'cancelado'
+        )
         ORDER BY c.data_compra DESC
     ");
 
