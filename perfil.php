@@ -54,7 +54,7 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
                   ? date('d/m/Y H:i', strtotime($bilhete['data_evento_fim']))
                   : null;
               ?>
-              <div class="ticket-card">
+              <div class="ticket-card <?php echo ($bilhete['estado_evento'] === 'cancelado') ? 'ticket-card--cancelado' : ''; ?>">
                 <?php if (!empty($bilhete['imagem'])): ?>
                   <img class="ticket-card-imagem"
                        src="<?php echo htmlspecialchars($bilhete['imagem']); ?>"
@@ -63,6 +63,9 @@ $iniciais_avatar  = strtoupper(substr($nome_utilizador, 0, 2));
                   <div class="ticket-card-imagem-placeholder">Sem imagem</div>
                 <?php endif; ?>
                 <div class="ticket-card-info">
+                  <?php if ($bilhete['estado_evento'] === 'cancelado'): ?>
+                    <span class="ticket-cancelado-banner">EVENTO CANCELADO</span>
+                  <?php endif; ?>
                   <span class="ticket-card-badge"><?php echo htmlspecialchars($bilhete['tipo_bilhete']); ?></span>
                   <h3><?php echo htmlspecialchars($bilhete['nome_evento']); ?></h3>
                   <p><span>Data:</span> <?php echo htmlspecialchars($fim_evento_fmt ? $inicio_evento_fmt . ' a ' . $fim_evento_fmt : $inicio_evento_fmt); ?></p>

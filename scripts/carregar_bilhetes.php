@@ -17,6 +17,7 @@ if ($id_utilizador) {
             e.data_fim       AS data_evento_fim,
             e.local          AS local_evento,
             e.imagem         AS imagem,
+            e.estado         AS estado_evento,
             tb.nome          AS tipo_bilhete,
             tb.preco         AS preco_unitario,
             ic.quantidade    AS quantidade,
