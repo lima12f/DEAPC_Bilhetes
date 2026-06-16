@@ -1,12 +1,14 @@
 <?php
 // scripts/processar_pagamento.php
 
-// 1. Iniciar sessão para saber quem é o utilizador
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. Verificar se o utilizador está logado e se o pedido veio por POST
+// 1. Limpar reservas expiradas antes de processar qualquer pagamento!
+// Se os 15 min do utilizador já passaram, o carrinho dele é apagado aqui e a compra falha com segurança.
+include_once __DIR__ . '/limpar_reservas.php';
+
 if (!isset($_SESSION['id_utilizador'])) {
     header("Location: ../login.php");
     exit();
@@ -26,9 +28,8 @@ $data_validade = trim($_POST['data_validade'] ?? '');
 $cvc = trim($_POST['cvc'] ?? '');
 $nif = trim($_POST['nif'] ?? '');
 
-// Validação Server-Side Básica (Nunca confiar apenas no JS!)
+// Validação Server-Side Básica
 if (empty($nome_titular) || empty($num_cartao) || empty($data_validade) || empty($cvc)) {
-    // Nota: Vamos assumir que vais renomear o pagamento.html para pagamento.php
     header("Location: ../pagamento.php?erro=dados_invalidos");
     exit();
 }
@@ -42,7 +43,7 @@ try {
 
     // 5. Ir buscar os itens que estão no carrinho do utilizador
     $stmt_carrinho = $db->prepare("
-        SELECT c.id AS id_carrinho, c.quantidade, t.id AS id_tipo_bilhete, t.preco, t.qtd_disponivel 
+        SELECT c.id AS id_carrinho, c.quantidade, t.id AS id_tipo_bilhete, t.preco
         FROM carrinho c
         JOIN tipos_bilhete t ON c.id_tipo_bilhete = t.id
         WHERE c.id_utilizador = :id_utilizador
@@ -50,22 +51,17 @@ try {
     $stmt_carrinho->execute(['id_utilizador' => $id_utilizador]);
     $itens = $stmt_carrinho->fetchAll(PDO::FETCH_ASSOC);
 
-    // Se o carrinho estiver vazio por algum motivo, abortamos
+    // Se o carrinho estiver vazio (ex: tempo expirou), abortamos
     if (count($itens) === 0) {
         $db->rollBack();
-        header("Location: ../index.php?erro=carrinho_vazio");
+        // Redireciona com erro a dizer que a reserva expirou
+        header("Location: ../index.php?carrinho=aberto&erro=reserva_expirada");
         exit();
     }
 
-    // 6. Calcular Totais e Verificar Stock
+    // 6. Calcular Totais (A verificação de stock foi removida porque o stock já está reservado/descontado!)
     $subtotal = 0;
     foreach ($itens as $item) {
-        // Se a quantidade pedida for maior que o stock atual, aborta tudo!
-        if ($item['quantidade'] > $item['qtd_disponivel']) {
-            $db->rollBack();
-            header("Location: ../index.php?carrinho=aberto&erro=stock_insuficiente");
-            exit();
-        }
         $subtotal += ($item['preco'] * $item['quantidade']);
     }
 
@@ -78,13 +74,11 @@ try {
         'id_utilizador' => $id_utilizador,
         'total' => $total_pagar
     ]);
-    $id_compra = $db->lastInsertId(); // Precisamos deste ID para as próximas tabelas
+    $id_compra = $db->lastInsertId();
 
-    // 8. Preparar Queries para Itens e Atualização de Stock
+    // 8. Inserir Itens na Compra (O UPDATE de stock foi removido daqui!)
     $stmt_item = $db->prepare("INSERT INTO itens_compra (id_compra, id_tipo_bilhete, quantidade, preco_unitario) VALUES (:id_compra, :id_tipo_bilhete, :quantidade, :preco)");
-    $stmt_stock = $db->prepare("UPDATE tipos_bilhete SET qtd_disponivel = qtd_disponivel - :quantidade WHERE id = :id_tipo_bilhete");
 
-    // Inserir cada bilhete e descontar o respetivo stock
     foreach ($itens as $item) {
         $stmt_item->execute([
             'id_compra' => $id_compra,
@@ -92,14 +86,9 @@ try {
             'quantidade' => $item['quantidade'],
             'preco' => $item['preco']
         ]);
-
-        $stmt_stock->execute([
-            'quantidade' => $item['quantidade'],
-            'id_tipo_bilhete' => $item['id_tipo_bilhete']
-        ]);
     }
 
-    // 9. Registar o Pagamento (Simulação Académica)
+    // 9. Registar o Pagamento
     $stmt_pagamento = $db->prepare("
         INSERT INTO pagamentos (id_compra, valor_total, taxa_plataforma, valor_evento, nif, nome_titular, num_cartao, data_validade, cvc)
         VALUES (:id_compra, :valor_total, :taxa, :valor_evento, :nif, :nome, :cartao, :validade, :cvc)
@@ -116,23 +105,20 @@ try {
         'cvc' => $cvc
     ]);
 
-    // 10. Esvaziar o Carrinho do utilizador após sucesso
+    // 10. Esvaziar o Carrinho do utilizador após sucesso (a reserva consolida-se em compra final)
     $stmt_limpar = $db->prepare("DELETE FROM carrinho WHERE id_utilizador = :id_utilizador");
     $stmt_limpar->execute(['id_utilizador' => $id_utilizador]);
 
-    // 11. Sucesso! Commit grava tudo permanentemente.
-    $db->commit(); // FIM DA ZONA SEGURA
+    // 11. Sucesso!
+    $db->commit();
 
-    // Redirecionar para o index com a flag de sucesso
     header("Location: ../index.php?pagamento=sucesso");
     exit();
 
 } catch (Exception $e) {
-    // Se der qualquer erro algures no processo, desfaz TODAS as alterações (Rollback)
     if (isset($db) && $db->inTransaction()) {
         $db->rollBack();
     }
-    // header("Location: ../pagamento.php?erro=erro_interno"); // Em produção
-    die("Erro Crítico no Sistema: " . $e->getMessage()); // Para debug
+    die("Erro Crítico no Sistema: " . $e->getMessage());
 }
 ?>
