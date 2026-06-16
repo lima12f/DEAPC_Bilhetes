@@ -53,11 +53,10 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicketZone - <?= $modo ?> Evento</title>
-    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="styles/admin.css?v=<?= time() ?>">
     <link rel="stylesheet" href="styles/eventos.css">
     <script src="js/eventos.js"></script>
     <script src="js/admin.js"></script>
-
 </head>
 <body>
     <nav>
@@ -65,7 +64,7 @@ if (isset($_GET['id'])) {
             <img src="images/logo.png" alt="Logo TicketZone">
         </div>
         <div class="botoes-nav">
-            <button class="botao" onclick="location.href='admin.php'">Voltar ao Dashboard</button>
+            <button class="botao botao-voltar" onclick="location.href='admin.php'">Voltar ao Dashboard</button>
         </div>
     </nav>
 
@@ -141,49 +140,46 @@ if (isset($_GET['id'])) {
             </div>
             <?php endif; ?>
 
-            <hr style="margin: 30px 0; border-top: 1px solid #eee;">
-            <h3>Tipos de Bilhete</h3>
+            <hr class="divisor-linha">
+            <h3 style="margin-bottom: 20px;">Tipos de Bilhete</h3>
 
-            <div id="container-bilhetes">
-                <hr style="margin: 30px 0; border-top: 1px solid #eee;">
-            <h3>Tipos de Bilhete</h3>
-
-            <div style="display: flex; gap: 10px; font-weight: bold; margin-bottom: 5px; padding: 0 5px; font-size: 0.9em; color: #555;">
-                <div style="flex: 2;">Nome do Bilhete</div>
-                <div style="flex: 1;">Preço (€)</div>
-                <div style="flex: 1;">Qtd Total</div>
-                <div style="flex: 1;">Válido Desde</div>
-                <div style="flex: 1;">Válido Até</div>
-                <div style="width: 30px;"></div>
+            <!-- Cabeçalho da Grelha -->
+            <div class="cabecalho-bilhetes">
+                <div>Nome do Bilhete</div>
+                <div>Preço (€)</div>
+                <div>Qtd Total</div>
+                <div>Válido Desde</div>
+                <div>Válido Até</div>
+                <div></div>
             </div>
 
             <div id="container-bilhetes">
                 <?php if (empty($bilhetes)): ?>
-                    <div class="linha-bilhete" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div class="linha-bilhete">
                         <input type="hidden" name="bilhete_id[]" value="0">
-                        <input type="text" name="bilhete_nome[]" placeholder="Nome (ex: VIP)" class="input-bilhete" style="flex: 2;">
-                        <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço (€)" class="input-bilhete" style="flex: 1;">
-                        <input type="number" name="bilhete_qtd[]" placeholder="Qtd Total" class="input-bilhete" style="flex: 1;">
-                        <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete" style="flex: 1;">
-                        <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete" style="flex: 1;">
-                        <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()" style="width: 30px; background: red; color: white; border: none; border-radius: 4px; cursor: pointer;">X</button>
+                        <input type="text" name="bilhete_nome[]" placeholder="Ex: VIP" class="input-bilhete">
+                        <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
+                        <input type="number" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
+                        <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete">
+                        <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete">
+                        <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
                     </div>
                 <?php else: ?>
                     <?php foreach ($bilhetes as $b): ?>
-                        <div class="linha-bilhete" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div class="linha-bilhete">
                             <input type="hidden" name="bilhete_id[]" value="<?= $b['id'] ?>">
-                            <input type="text" name="bilhete_nome[]" value="<?= htmlspecialchars($b['nome']) ?>" placeholder="Nome" class="input-bilhete" style="flex: 2;">
-                            <input type="number" step="0.01" name="bilhete_preco[]" value="<?= $b['preco'] ?>" placeholder="Preço (€)" class="input-bilhete" style="flex: 1;">
-                            <input type="number" name="bilhete_qtd[]" value="<?= $b['qtd_total'] ?>" placeholder="Qtd" class="input-bilhete" style="flex: 1;">
-                            <input type="date" name="bilhete_d_ini[]" value="<?= $b['data_valido_inicio'] ?>" class="input-bilhete" style="flex: 1;">
-                            <input type="date" name="bilhete_d_fim[]" value="<?= $b['data_valido_fim'] ?>" class="input-bilhete" style="flex: 1;">
-                            <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()" style="width: 30px; background: red; color: white; border: none; border-radius: 4px; cursor: pointer;">X</button>
+                            <input type="text" name="bilhete_nome[]" value="<?= htmlspecialchars($b['nome']) ?>" placeholder="Ex: VIP" class="input-bilhete">
+                            <input type="number" step="0.01" name="bilhete_preco[]" value="<?= $b['preco'] ?>" placeholder="Preço" class="input-bilhete">
+                            <input type="number" name="bilhete_qtd[]" value="<?= $b['qtd_total'] ?>" placeholder="Qtd" class="input-bilhete">
+                            <input type="date" name="bilhete_d_ini[]" value="<?= $b['data_valido_inicio'] ?>" class="input-bilhete">
+                            <input type="date" name="bilhete_d_fim[]" value="<?= $b['data_valido_fim'] ?>" class="input-bilhete">
+                            <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
 
-            <button type="button" class="botao" id="btn-add-bilhete" style="margin-top: 10px; background-color: #6c757d;">+ Adicionar Bilhete</button>
+            <button type="button" class="botao" id="btn-add-bilhete" style="background-color: #6c757d; border: none; color: white; margin-top: 10px;">Adicionar Bilhete</button>
             <span class="erro-msg" id="erro_bilhetes" style="display:block; margin-top:10px;"></span>
 
             <div class="acoes-form">
