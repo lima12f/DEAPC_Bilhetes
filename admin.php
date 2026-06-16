@@ -32,6 +32,7 @@ foreach ($eventos as $evento) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TicketZone - Administrador</title>
     <link rel="stylesheet" href="styles/admin.css?v=<?= time() ?>" />
+    <script src="js/admin.js"> </script>
 </head>
 <body>
 

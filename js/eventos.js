@@ -3,23 +3,22 @@ window.onload = function() {
     var form = document.getElementById('formEvento');
     var isEdit = document.querySelector('input[name="id_evento"]') !== null;
 
-    // Lógica para adicionar novos bilhetes dinamicamente (DOM)
+    // Lógica para adicionar novos bilhetes dinamicamente (DOM) com classes limpas
     var btnAddBilhete = document.getElementById('btn-add-bilhete');
     if (btnAddBilhete) {
         btnAddBilhete.onclick = function() {
             var container = document.getElementById('container-bilhetes');
             var div = document.createElement('div');
             div.className = 'linha-bilhete';
-            div.style.cssText = "display: flex; gap: 10px; margin-bottom: 10px;"; // Alinhamento da nova linha
             
             div.innerHTML = `
                 <input type="hidden" name="bilhete_id[]" value="0">
-                <input type="text" name="bilhete_nome[]" placeholder="Nome (ex: VIP)" class="input-bilhete" style="flex: 2;">
-                <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço (€)" class="input-bilhete" style="flex: 1;">
-                <input type="number" name="bilhete_qtd[]" placeholder="Qtd Total" class="input-bilhete" style="flex: 1;">
-                <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete" style="flex: 1;">
-                <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete" style="flex: 1;">
-                <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()" style="width: 30px; background: red; color: white; border: none; border-radius: 4px; cursor: pointer;">X</button>
+                <input type="text" name="bilhete_nome[]" placeholder="Ex: VIP" class="input-bilhete">
+                <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
+                <input type="number" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
+                <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete">
+                <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete">
+                <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
             `;
             container.appendChild(div);
         };
@@ -103,16 +102,20 @@ window.onload = function() {
                 var bIni = new Date(bilheteIni[k].value);
                 var bFim = new Date(bilheteFim[k].value);
 
+                // Isola a Data do Evento (Ano-Mês-Dia) para garantir que compara as datas perfeitamente e ignora as horas
+                var dIniEvData = new Date(dataInicio.value.substring(0, 10));
+                var dFimEvData = new Date(dataFim.value.substring(0, 10));
+
                 if (bFim < bIni) {
                     erroBilhetes.innerHTML += `Erro no bilhete '${nomesBilhetes[k].value}': A data de fim não pode ser anterior à de início.<br>`;
                     bilheteFim[k].style.borderColor = "red";
                     valid = false;
                 }
 
-                // O bilhete não pode ter datas "fora" dos limites do evento (por exemplo, vender bilhetes depois do evento ter acabado)
-                // Removemos o limite de início (pois os bilhetes vendem-se ANTES do evento), mas o limite de fim da venda não pode passar do fim do evento
-                if (bFim > dFimEv) {
-                    erroBilhetes.innerHTML += `Erro no bilhete '${nomesBilhetes[k].value}': A data de validade não pode ultrapassar o fim do evento.<br>`;
+                // O bilhete tem que ter as datas Válido Desde / Até PRESAS nos limites do evento
+                if (bIni < dIniEvData || bFim > dFimEvData) {
+                    erroBilhetes.innerHTML += `Erro no bilhete '${nomesBilhetes[k].value}': As datas do bilhete têm de estar entre o Início e o Fim do Evento.<br>`;
+                    bilheteIni[k].style.borderColor = "red";
                     bilheteFim[k].style.borderColor = "red";
                     valid = false;
                 }

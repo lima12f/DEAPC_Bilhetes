@@ -136,16 +136,6 @@ if (isset($_GET['id'])) {
                 <?php endif; ?>
             </div>
 
-            <?php if ($evento): ?>
-            <div class="grupo-form">
-                <label for="estado">Estado</label>
-                <select id="estado" name="estado">
-                    <option value="ativo" <?= $evento['estado'] === 'ativo' ? 'selected' : '' ?>>Ativo</option>
-                    <option value="cancelado" <?= $evento['estado'] === 'cancelado' ? 'selected' : '' ?>>Cancelado</option>
-                </select>
-            </div>
-            <?php endif; ?>
-
             <hr class="divisor-linha">
             <h3 style="margin-bottom: 20px;">Tipos de Bilhete</h3>
 
