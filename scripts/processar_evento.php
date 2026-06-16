@@ -80,12 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         for ($i = 0; $i < count($_POST['bilhete_nome']); $i++) {
             $b_id = (int)$_POST['bilhete_id'][$i];
             $b_nome = trim($_POST['bilhete_nome'][$i]);
-            $b_preco = (float)$_POST['bilhete_preco'][$i];
-            $b_qtd = (int)$_POST['bilhete_qtd'][$i];
+            
+            // Segurança Backend: Impede valores negativos ou quantidades zero
+            $b_preco = max(0, (float)$_POST['bilhete_preco'][$i]);
+            $b_qtd = max(1, (int)$_POST['bilhete_qtd'][$i]);
+            
             $b_d_ini = $_POST['bilhete_d_ini'][$i];
             $b_d_fim = $_POST['bilhete_d_fim'][$i];
 
-            if ($b_nome !== '' && $b_qtd > 0) {
+            if ($b_nome !== '') {
                 if ($b_id === 0) {
                     // É um registo novo
                     $stmt_insert_bilhete->bindValue(':id_ev', $id_evento, SQLITE3_INTEGER);

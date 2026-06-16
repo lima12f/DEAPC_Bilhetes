@@ -3,7 +3,7 @@ window.onload = function() {
     var form = document.getElementById('formEvento');
     var isEdit = document.querySelector('input[name="id_evento"]') !== null;
 
-    // Lógica para adicionar novos bilhetes dinamicamente (DOM) com classes limpas
+    // Lógica para adicionar novos bilhetes dinamicamente (DOM) com classes limpas e bloqueio de negativos
     var btnAddBilhete = document.getElementById('btn-add-bilhete');
     if (btnAddBilhete) {
         btnAddBilhete.onclick = function() {
@@ -14,8 +14,8 @@ window.onload = function() {
             div.innerHTML = `
                 <input type="hidden" name="bilhete_id[]" value="0">
                 <input type="text" name="bilhete_nome[]" placeholder="Ex: VIP" class="input-bilhete">
-                <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
-                <input type="number" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
+                <input type="number" step="0.01" min="0" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
+                <input type="number" min="1" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
                 <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete">
                 <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete">
                 <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
@@ -79,7 +79,7 @@ window.onload = function() {
             }
         }
 
-        // --- VALIDAÇÃO DE DATAS DOS BILHETES ---
+        // --- VALIDAÇÃO DE DATAS E VALORES DOS BILHETES ---
         var nomesBilhetes = document.getElementsByName('bilhete_nome[]');
         var precosBilhetes = document.getElementsByName('bilhete_preco[]');
         var qtdsBilhetes = document.getElementsByName('bilhete_qtd[]');
@@ -95,6 +95,18 @@ window.onload = function() {
                 erroBilhetes.innerHTML += "Preencha todos os campos (Nome, Preço e Qtd) nos bilhetes.<br>";
                 nomesBilhetes[k].style.borderColor = "red"; precosBilhetes[k].style.borderColor = "red"; qtdsBilhetes[k].style.borderColor = "red";
                 valid = false;
+            } else {
+                // Impede valores negativos submetidos manualmente no DOM
+                if (parseFloat(precosBilhetes[k].value) < 0) {
+                    erroBilhetes.innerHTML += `Erro no bilhete '${nomesBilhetes[k].value}': O preço não pode ser negativo.<br>`;
+                    precosBilhetes[k].style.borderColor = "red";
+                    valid = false;
+                }
+                if (parseInt(qtdsBilhetes[k].value) <= 0) {
+                    erroBilhetes.innerHTML += `Erro no bilhete '${nomesBilhetes[k].value}': A quantidade tem de ser maior que zero.<br>`;
+                    qtdsBilhetes[k].style.borderColor = "red";
+                    valid = false;
+                }
             }
 
             // Verifica as datas dos bilhetes em relação ao evento

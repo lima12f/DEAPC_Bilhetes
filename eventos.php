@@ -153,8 +153,8 @@ if (isset($_GET['id'])) {
                     <div class="linha-bilhete">
                         <input type="hidden" name="bilhete_id[]" value="0">
                         <input type="text" name="bilhete_nome[]" placeholder="Ex: VIP" class="input-bilhete">
-                        <input type="number" step="0.01" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
-                        <input type="number" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
+                        <input type="number" step="0.01" min="0" name="bilhete_preco[]" placeholder="Preço" class="input-bilhete">
+                        <input type="number" min="1" name="bilhete_qtd[]" placeholder="Qtd" class="input-bilhete">
                         <input type="date" name="bilhete_d_ini[]" title="Válido a partir de" class="input-bilhete">
                         <input type="date" name="bilhete_d_fim[]" title="Válido até" class="input-bilhete">
                         <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
@@ -164,8 +164,8 @@ if (isset($_GET['id'])) {
                         <div class="linha-bilhete">
                             <input type="hidden" name="bilhete_id[]" value="<?= $b['id'] ?>">
                             <input type="text" name="bilhete_nome[]" value="<?= htmlspecialchars($b['nome']) ?>" placeholder="Ex: VIP" class="input-bilhete">
-                            <input type="number" step="0.01" name="bilhete_preco[]" value="<?= $b['preco'] ?>" placeholder="Preço" class="input-bilhete">
-                            <input type="number" name="bilhete_qtd[]" value="<?= $b['qtd_total'] ?>" placeholder="Qtd" class="input-bilhete">
+                            <input type="number" step="0.01" min="0" name="bilhete_preco[]" value="<?= $b['preco'] ?>" placeholder="Preço" class="input-bilhete">
+                            <input type="number" min="1" name="bilhete_qtd[]" value="<?= $b['qtd_total'] ?>" placeholder="Qtd" class="input-bilhete">
                             <input type="date" name="bilhete_d_ini[]" value="<?= $b['data_valido_inicio'] ?>" class="input-bilhete">
                             <input type="date" name="bilhete_d_fim[]" value="<?= $b['data_valido_fim'] ?>" class="input-bilhete">
                             <button type="button" class="btn-remover-bilhete" onclick="this.parentElement.remove()">X</button>
