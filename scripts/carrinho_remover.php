@@ -47,8 +47,20 @@ if ($id_item_carrinho > 0) {
     }
 }
 
-$pagina_anterior = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../index.php';
-$url_limpa = strtok($pagina_anterior, '?'); 
-header("Location: " . $url_limpa . "?carrinho=aberto");
+// 5. Redirecionar de volta (Usando o caminho exato do input escondido)
+// Se falhar, o fallback seguro continua a ser o index
+$url_atual = isset($_POST['url_retorno']) && !empty($_POST['url_retorno']) ? $_POST['url_retorno'] : '../index.php';
+
+// Limpar parâmetros antigos do carrinho para não ficarem duplicados na URL
+$url_destino = str_replace(['?carrinho=aberto', '&carrinho=aberto'], '', $url_atual);
+
+// Adicionar a instrução para o modal abrir automaticamente
+if (strpos($url_destino, '?') !== false) {
+    $url_destino .= '&carrinho=aberto';
+} else {
+    $url_destino .= '?carrinho=aberto';
+}
+
+header("Location: " . $url_destino);
 exit();
 ?>

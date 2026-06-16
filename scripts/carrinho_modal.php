@@ -46,6 +46,7 @@ $classe_visibilidade = (isset($_GET['carrinho']) && $_GET['carrinho'] === 'abert
                     
                     <form method="POST" action="scripts/carrinho_remover.php" class="form-remover">
                         <input type="hidden" name="id_item_carrinho" value="<?php echo $item['id_carrinho']; ?>">
+                        <input type="hidden" name="url_retorno" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
                         <button type="submit" class="btn-remover-item" title="Remover do carrinho">x</button>
                     </form>
                 </div>
